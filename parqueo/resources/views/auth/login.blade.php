@@ -76,7 +76,7 @@
                                 @endif --}}
                                             <div class="text-center mt-3">
                                                 <a class="text-blue-dark text-decoration-none "
-                                                    href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                    href="{{ route('register') }}">Registrarse</a>
                                             </div>
                                         </div>
                                     </div>

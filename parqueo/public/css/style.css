@@ -1,9 +1,17 @@
 :root {
     --blue-dark: #0E267C;
     --white: #faf0e6;
+    --red-cherry:#F10707
 }
 /*BACKGROUNDS-----------------------------------*/
 .bg-blue-dark{ background-color: var(--blue-dark) !important;}
+.bg-red-cherry{ background-color: var(--red-cherry); !important;}
+
+/*FONTS*/
+.family-inter{
+    font-family: Inter Arial;
+}
+
 /*TEXTS----------------------------------------- */
 .text-blue-dark{
     color: var(--blue-dark);
@@ -20,4 +28,11 @@
 .image-park{
   max-width: 100%;
 }
-
+/*REGISTER------------------------------------------ */
+.content-register-all{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    background-color: var(--blue-dark)
+}

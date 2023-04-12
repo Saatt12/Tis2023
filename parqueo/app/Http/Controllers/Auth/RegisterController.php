@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Unidad;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Cargo;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -62,11 +64,20 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
+    public function showRegistrationForm()
+    {
+        $cargos = Cargo::all();
+        $unidades = Unidad::all();
+        return view('auth.register',)->with(["cargos"=>$cargos,"unidades"=>$unidades]);
+    }
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'cargo_id' => $data['cargo_id'],
+            'unidad_id' => $data['unidad_id'],
+            'ci' => $data['ci'],
             'password' => Hash::make($data['password']),
         ]);
     }

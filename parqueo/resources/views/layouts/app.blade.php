@@ -77,15 +77,16 @@
                 </div>
             </div>
         </nav> --}}
-        <nav>
+        <nav class="py-2">
             <div class="container">
                 <div class="d-flex justify-content-between">
-                    <div><img class="navbar-image-logo" src="{{ asset('images/fct_logo.png') }}" alt=""></div>
+
                     <div><img class="navbar-image-logo" src="{{ asset('images/umss_logo.png') }}" alt=""></div>
+                    <div><img class="navbar-image-logo" src="{{ asset('images/fct_logo.png') }}" alt=""></div>
                 </div>
             </div>
         </nav>
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>

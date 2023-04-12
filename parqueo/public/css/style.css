@@ -1,0 +1,23 @@
+:root {
+    --blue-dark: #0E267C;
+    --white: #faf0e6;
+}
+/*BACKGROUNDS-----------------------------------*/
+.bg-blue-dark{ background-color: var(--blue-dark) !important;}
+/*TEXTS----------------------------------------- */
+.text-blue-dark{
+    color: var(--blue-dark);
+}
+/*LOGIN----------------------------------------- */
+.navbar-image-logo{
+    max-height: 130px;
+}
+.separation-content-login{
+    background:  var(--blue-dark);
+    height: 80px;
+    width: 100%;
+}
+.image-park{
+  max-width: 100%;
+}
+

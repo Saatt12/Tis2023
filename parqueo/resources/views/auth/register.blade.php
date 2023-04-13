@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="content-register-all">
-
+    </div>
         <div class="container">
             <div class="row justify-content-center pt-5">
                 <div class="col-md-5">
@@ -154,5 +154,5 @@
                 </div>
             </div>
         </div>
-    </div>
+
 @endsection

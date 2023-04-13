@@ -1,11 +1,12 @@
 :root {
     --blue-dark: #0E267C;
-    --white: #faf0e6;
+    --white: #ffffff;
     --red-cherry:#F10707
 }
 /*BACKGROUNDS-----------------------------------*/
 .bg-blue-dark{ background-color: var(--blue-dark) !important;}
 .bg-red-cherry{ background-color: var(--red-cherry); !important;}
+.bg-white-f{ background-color: var(--white) !important;}
 
 /*FONTS*/
 .family-inter{
@@ -34,5 +35,7 @@
     height: 100%;
     width: 100%;
     padding: 0;
+    top:0;
+    z-index: -1;
     background-color: var(--blue-dark)
 }

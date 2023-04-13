@@ -5,7 +5,7 @@
     </div>
         <div class="container">
             <div class="row justify-content-center pt-5">
-                <div class="col-md-5">
+                <div class="col-md-7 col-lg-5">
                     <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Formulario de Registro</div>
                     <div class="card">
                         <div class="card-body">

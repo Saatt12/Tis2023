@@ -1,12 +1,16 @@
 :root {
+    --dark: #131111;
     --blue-dark: #0E267C;
+    --blue-dark-light:#2089AA;
     --white: #ffffff;
-    --red-cherry:#F10707
+    --red-cherry:#F10707;
+    --pink-light: #FFF3CD;
 }
 /*BACKGROUNDS-----------------------------------*/
 .bg-blue-dark{ background-color: var(--blue-dark) !important;}
 .bg-red-cherry{ background-color: var(--red-cherry); !important;}
 .bg-white-f{ background-color: var(--white) !important;}
+.bg-blue-dark-light{ background-color: var(--blue-dark-light) !important;}
 
 /*FONTS*/
 .family-inter{
@@ -16,6 +20,9 @@
 /*TEXTS----------------------------------------- */
 .text-blue-dark{
     color: var(--blue-dark);
+}
+.text-dark{
+    color: var(--dark);
 }
 /*LOGIN----------------------------------------- */
 .navbar-image-logo{
@@ -38,4 +45,15 @@
     top:0;
     z-index: -1;
     background-color: var(--blue-dark)
+}
+/*ADMIN PANEL*/
+.navbar-content-fix{
+   width: 300px;
+}
+.title-nav{
+    height: 50px;
+}
+.btn-item-nav:hover{
+    background-color: var(--pink-light);
+    border-radius: 30px;
 }

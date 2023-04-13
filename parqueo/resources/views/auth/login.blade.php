@@ -37,7 +37,7 @@
                                         <div class="form-floating">
                                             <input id="password" type="password"
                                                 class="form-control @error('password') is-invalid @enderror"
-                                                name="Contraseña" required autocomplete="current-password"
+                                                name="password" required autocomplete="current-password"
                                                 placeholder="Password">
                                             <label for="password" for="password">Contraseña</label>
                                         </div>

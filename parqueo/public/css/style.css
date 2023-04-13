@@ -5,12 +5,17 @@
     --white: #ffffff;
     --red-cherry:#F10707;
     --pink-light: #FFF3CD;
+    --blue-dark-light-2: #086684;
+    --blue-light:#9EC3CE;
+    --blue-dark-2:#2541A5;
 }
 /*BACKGROUNDS-----------------------------------*/
 .bg-blue-dark{ background-color: var(--blue-dark) !important;}
 .bg-red-cherry{ background-color: var(--red-cherry); !important;}
 .bg-white-f{ background-color: var(--white) !important;}
 .bg-blue-dark-light{ background-color: var(--blue-dark-light) !important;}
+.bg-blue-dark-light-2{ background-color: var(--blue-dark-light-2) !important;}
+.bg-pink-light{ background-color: var(--pink-light) !important;}
 
 /*FONTS*/
 .family-inter{
@@ -21,8 +26,25 @@
 .text-blue-dark{
     color: var(--blue-dark);
 }
+.text-red-cherry{
+    color: var(--red-cherry);
+}
 .text-dark{
     color: var(--dark);
+}
+.text-pink-light{
+    color: var(--pink-light);
+}
+
+/*TABLES-----------------------------------------*/
+
+.table-blue-light>:not(caption)>*>*{
+    background-color: var(--blue-light) !important;
+    color: var(--blue-dark-2);
+}
+.table-blue-light>tbody>tr:nth-of-type(odd)>*{
+    background-color: var(--blue-light) !important;
+    color: var(--blue-dark-2);
 }
 /*LOGIN----------------------------------------- */
 .navbar-image-logo{
@@ -35,6 +57,11 @@
 }
 .image-park{
   max-width: 100%;
+}
+
+/*MODAL DIALOG--------------------------------------*/
+.modal-backdrop{
+    display: none;
 }
 /*REGISTER------------------------------------------ */
 .content-register-all{
@@ -54,6 +81,13 @@
     height: 50px;
 }
 .btn-item-nav:hover{
+    background-color: var(--pink-light);
+    border-radius: 30px;
+}
+.item-avatar .dropdown-toggle::after{
+    content: initial !important;
+}
+.active-item-nav{
     background-color: var(--pink-light);
     border-radius: 30px;
 }

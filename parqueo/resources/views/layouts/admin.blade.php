@@ -1,32 +1,5 @@
 @extends('layouts.app')
 @section('content')
-   {{-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">Navbar</a>
-            <div class="navbar-collapse collapse" id="collapse">
-                <div>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li>
-                </ul>
-                </div>
-            </div>
-        </div>
-    </nav>--}}
    <div class="main-content-panel position-fixed h-100 w-100 d-flex">
        <nav class="navbar-content-fix bg-blue-dark-light h-100">
            <div>
@@ -38,20 +11,58 @@
            <div>
                <ul class="list-unstyled ps-3">
                    <li>
-                       <a class="text-dark text-decoration-none btn-item-nav btn"  href="" >Lista Clientes </a>
+                       <a
+                           class="@if(@$type_list==='cliente') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn "
+                           href="" >Lista Clientes </a>
                    </li>
                    <li>
-                       <a class="text-dark text-decoration-none btn-item-nav btn"  href="" >Solicitud Clientes </a>
+                       <a
+
+                           class="@if(@$type_list==='request') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="" >Solicitud Clientes </a>
                    </li>
                    <li>
-                       <a class="text-dark text-decoration-none btn-item-nav btn"  href="" >Lista de Empleados </a>
+                       <a
+                           class="@if(@$type_list==='employee') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="" >Lista de Empleados </a>
                    </li>
                    <li>
-                       <a class="text-dark text-decoration-none btn-item-nav btn"  href="" >Lista de Horarios </a>
+                       <a
+                           class="@if(@$type_list==='schedules') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="" >Lista de Horarios </a>
                    </li>
                </ul>
            </div>
        </nav>
-        @yield('content-admin')
+       <div class="w-100">
+           <div class="bg-blue-dark-light-2 d-flex justify-content-between py-3 px-3">
+               <h4 class="text-pink-light">Nombre lista</h4>
+               <div>
+                   <div class=" dropdown  item-avatar">
+                       <div id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                           <div class="rounded-circle py-2 px-3 text-blue-dark bg-pink-light" >
+                            {{ substr(Auth::user()->name,0,1) }}
+                           </div>
+                       </div>
+
+                       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                           <a class="dropdown-item" href="{{ route('logout') }}"
+                              onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                               {{ __('Logout') }}
+                           </a>
+
+                           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                               @csrf
+                           </form>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+
+           @yield('content-admin')
+
+       </div>
    </div>
 @endsection

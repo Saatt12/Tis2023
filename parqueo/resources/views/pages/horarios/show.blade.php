@@ -4,18 +4,19 @@
     <div class="container">
         <div class="row justify-content-center pt-5">
             <div class="col-md-8 col-lg-7">
-                <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Formulario de Registro</div>
+                <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Editar Horario</div>
                 <div class="card">
                     <div class="card-body">
-                        <form class="ps-3" method="POST" action="{{ route('horario.store') }}">
+                        <form class="ps-3" method="POST" action="{{ route('horario.update', $horario->id) }}">
                             @csrf
+                            @method('PUT')
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label">Crear Horario</label>
+                                <label for="name" class="col-md-4 col-form-label">Nombre Horario</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text"
                                            class="form-control @error('nom_turno') is-invalid @enderror" name="nom_turno"
-                                           value="" required autocomplete="name" autofocus>
+                                           value="{{@$horario->nom_turno}}" required autocomplete="name" autofocus>
 
                                     @error('nom_turno')
                                     <span class="invalid-feedback" role="alert">
@@ -28,17 +29,21 @@
                                 <label for="horario_entrada" class="col-md-4 col-form-label">Horario Entrada</label>
                                 <div class="col-md-6">
                                     <select id="horario_entrada" class="form-control @error('hora_entrada') is-invalid @enderror" name="hora_entrada" required autofocus>
-                                        <option value="" selected> Selecciona una hora</option>
-                                        @for ($i = 0; $i < 24; $i++)
-                                            <option value="{{$i}}:00">{{$i}}:00
-                                                @if($i>=0 && $i<12)
+                                        <option value="" > Selecciona una hora</option>
+                                        @foreach($hours as $hour)
+                                            <option
+                                                value="{{$hour}}:00"
+                                                {{ $horario->hora_entrada == $hour ? 'selected' : '' }}
+                                            >
+                                                {{$hour}}:00
+                                                @if($hour>=0 && $hour<12)
                                                     AM
                                                 @endif
-                                                @if($i>=12 && $i<24)
+                                                @if($hour>=12 && $hour<24)
                                                     PM
                                                 @endif
                                             </option>
-                                        @endfor
+                                        @endforeach
                                     </select>
 
                                     @error('cargo_id')
@@ -51,18 +56,22 @@
                             <div class="row mb-3">
                                 <label for="horario_salida" class="col-md-4 col-form-label">Horario Salida</label>
                                 <div class="col-md-6">
-                                     <select id="horario_salida" class="form-control @error('hora_salida') is-invalid @enderror" name="hora_salida" required autofocus>
-                                        <option value="" selected> Selecciona una Hora</option>
-                                        @for ($i = 0; $i < 24; $i++)
-                                            <option value="{{$i}}:00">{{$i}}:00
-                                                @if($i>=0 && $i<12)
-                                                    AM
-                                                @endif
-                                                @if($i>=12 && $i<24)
-                                                    PM
-                                                @endif
+                                    <select id="horario_salida" class="form-control @error('hora_salida') is-invalid @enderror" name="hora_salida" required autofocus>
+                                        <option value=""  selected="{{!@$horario->hora_salida?'selected':''}}"> Selecciona una Hora</option>
+                                        @foreach($hours as $hour)
+                                            <option
+                                                value="{{$hour}}:00"
+                                        {{ $horario->hora_salida == $hour ? 'selected' : '' }}
+                                        >
+                                        {{$hour}}:00
+                                        @if($hour>=0 && $hour<12)
+                                            AM
+                                        @endif
+                                        @if($hour>=12 && $hour<24)
+                                            PM
+                                            @endif
                                             </option>
-                                        @endfor
+                                            @endforeach
                                     </select>
 
                                     @error('cargo_id')

@@ -14,11 +14,11 @@
             <tbody>
                 @foreach($users as $user)
                   <tr>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->ci}}</td>
-                    <td>{{$user->email}}</td>
+                    <td>{{$user['name']}}</td>
+                    <td>{{$user['ci']}}</td>
+                    <td>{{$user['email']}}</td>
                       <td>
-                          <a type="button" class="text-decoration-none me-3" href="{{ route('users.show', ['id' => $user->id]) }}">
+                          <a type="button" class="text-decoration-none me-3" href="{{ route('users.show', ['id' => $user['id']]) }}">
                               Editar
                           </a>
                           <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -35,7 +35,7 @@
                                       <div class="modal-body">
                                           <div class="text-center">
                                             ¿Deseas eliminar  esta cuenta?
-                                              <form action="/users/{{ $user->id }}" method="POST" class="mt-3">
+                                              <form action="/users/{{ $user['id'] }}" method="POST" class="mt-3">
                                                   @csrf
                                                   @method('DELETE')
 

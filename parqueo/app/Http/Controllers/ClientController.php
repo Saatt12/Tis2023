@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,9 +18,15 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        $type_list = 'cliente';
+        $title='PARQUEO UMSS';
+        return view('page_client.home')->with([
+            'users'=>$users,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *

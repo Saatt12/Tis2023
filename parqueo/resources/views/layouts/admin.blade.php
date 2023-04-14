@@ -4,7 +4,7 @@
        <nav class="navbar-content-fix bg-blue-dark-light h-100">
            <div>
                <div class="title-nav d-flex align-items-center justify-content-center">
-                   {{auth()->user()->load(['cargo'])->cargo->nom_cargo}}
+                   {{auth()->user()->load(['rol'])->rol->nom_role }}
                </div>
                <hr>
            </div>
@@ -24,7 +24,7 @@
                    <li>
                        <a
                            class="@if(@$type_list==='employee') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
-                           href="" >Lista de Empleados </a>
+                           href="{{ url('/employees') }}"href="" >Lista de Empleados </a>
                    </li>
                    <li>
                        <a

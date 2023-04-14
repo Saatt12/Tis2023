@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','cargo_id','unidad_id','celular','ci',
+        'name', 'email', 'password','cargo_id','unidad_id','celular','ci','rol_id',
     ];
 
     /**
@@ -40,5 +40,13 @@ class User extends Authenticatable
     public function cargo()
     {
         return $this->belongsTo('App\Models\Cargo');
+    }
+    public function rol()
+    {
+        return $this->belongsTo('App\Models\Rol');
+    }
+    public function hasRole($role)
+    {
+        return User::where('id',$this->id)->where('rol_id', $role)->first();
     }
 }

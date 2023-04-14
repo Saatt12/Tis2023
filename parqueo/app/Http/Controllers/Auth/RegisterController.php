@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rol;
 use App\Models\Unidad;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -55,7 +56,9 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            "ci"=>['min:5'],
+            "celular"=>['min:7'],
+            ]);
     }
 
     /**
@@ -72,12 +75,15 @@ class RegisterController extends Controller
     }
     protected function create(array $data)
     {
+        $role_client = Rol::where('nom_role','CLIENTE')->first();
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'cargo_id' => $data['cargo_id'],
             'unidad_id' => $data['unidad_id'],
+            'celular' => $data['celular'],
             'ci' => $data['ci'],
+            'rol_id'=>$role_client->id,
             'password' => Hash::make($data['password']),
         ]);
     }

@@ -2,24 +2,27 @@
 
 @section('content-admin')
     <div >
-        <a href="{{route('horario.create')}}" class="btn btn-primary m-2"> Añadir Horario</a>
+        <a href="{{route('employee.create')}}" class="btn btn-primary m-2"> Añadir Empleado</a>
     </div>
     <table class="table table-striped table-blue-light">
         <thead>
-        {{--<tr>
+        <tr>
             <th scope="col">Nombre</th>
             <th scope="col">CI</th>
             <th scope="col">Email</th>
+            <th scope="col">Rol</th>
             <th></th>
-        </tr>--}}
+        </tr>
         </thead>
         <tbody>
-        @foreach($horarios as $horario)
+        @foreach($users as $user)
             <tr>
-                <td>{{$horario->nom_turno}}</td>
-                <td>{{$horario->hora_entrada}} - {{$horario->hora_salida}}</td>
+                <td>{{$user['name']}}</td>
+                <td>{{$user['ci']}}</td>
+                <td>{{$user['email']}}</td>
+                <td>{{$user['rol']->nom_role}}</td>
                 <td>
-                    <a type="button" class="text-decoration-none me-3" href="{{ route('horario.show', ['id' => $horario->id]) }}">
+                    <a type="button" class="text-decoration-none me-3" href="{{ route('employee.show', ['id' => $user['id']]) }}">
                         Editar
                     </a>
                     <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -36,7 +39,7 @@
                                 <div class="modal-body">
                                     <div class="text-center">
                                         ¿Deseas eliminar  esta cuenta?
-                                        <form action="/horarios/{{ $horario->id }}" method="POST" class="mt-3">
+                                        <form action="/employees/{{ $user['id'] }}" method="POST" class="mt-3">
                                             @csrf
                                             @method('DELETE')
 
@@ -50,6 +53,7 @@
                             </div>
                         </div>
                     </div>
+
 
                 </td>
             </tr>

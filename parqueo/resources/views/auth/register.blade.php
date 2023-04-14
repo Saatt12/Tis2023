@@ -44,11 +44,11 @@
                                 <div class="row mb-3">
                                     <label for="celular" class="col-md-4 col-form-label">Celular </label>
                                     <div class="col-md-6">
-                                        <input id="name" type="text"
+                                        <input id="name" type="number"
                                                class="form-control @error('celular') is-invalid @enderror" name="celular"
                                                value="{{ old('celular') }}" required autocomplete="celular" autofocus>
 
-                                        @error('name')
+                                        @error('celular')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

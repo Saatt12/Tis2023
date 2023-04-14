@@ -77,7 +77,7 @@
                 </div>
             </div>
         </nav> --}}
-        <div class="py-2 bg-white-f">
+        <div class="py-2 bg-white-f position-fixed w-100 z-i-100">
             <div class="container">
                 <div class="d-flex justify-content-between">
 
@@ -86,7 +86,7 @@
                 </div>
             </div>
         </div>
-        <main>
+        <main >
             @yield('content')
         </main>
     </div>

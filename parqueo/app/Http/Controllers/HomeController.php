@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\Horario;
 use App\Models\Unidad;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -28,9 +30,11 @@ class HomeController extends Controller
     {
         $users = User::all();
         $type_list = 'cliente';
+        $title='Lista de Clientes';
         return view('home')->with([
             'users'=>$users,
-            'type_list' =>$type_list
+            'type_list' =>$type_list,
+            'title'=>$title
         ]);
     }
     public function destroy($id)
@@ -44,15 +48,38 @@ class HomeController extends Controller
         $user = User::find($id);
         $cargos = Cargo::all();
         $unidades = Unidad::all();
-        return view('pages.client.edit', ['user' => $user,"cargos"=>$cargos,"unidades"=>$unidades]);
+        $type_list = 'cliente';
+        $title='Editar de Cliente';
+        return view('pages.client.edit', [
+            'user' => $user,
+            "cargos"=>$cargos,
+            "unidades"=>$unidades,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
     }
-    public function update(User $user, Request $request)
+    public function update(Request $request, $id)
     {
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->save();
-        $cargos = Cargo::all();
-        $unidades = Unidad::all();
-        return redirect()->route('users.show', $user->id)->with(['user' => $user,"cargos"=>$cargos,"unidades"=>$unidades]);
+        $user = User::findOrFail($id);
+        $requestData = $request->all();
+        $requestData['password'] = Hash::make($request->password);
+        $user->update($requestData);
+        return redirect()->route('users.show', $user->id);
+    }
+
+    public function list_horarios()
+    {
+
+        $horarios = Horario::all();
+        $type_list = 'schedules';
+        $title='Lista de Horarios';
+        return view('pages.horarios.list')->with([
+            'horarios'=>$horarios,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
+    }
+    public function horarios_create(){
+        return view('pages.horarios.create');
     }
 }

@@ -21,7 +21,10 @@
 .family-inter{
     font-family: Inter Arial;
 }
-
+/*NAVBAR*---------------------------------------*/
+.z-i-100{
+    z-index: 100;
+}
 /*TEXTS----------------------------------------- */
 .text-blue-dark{
     color: var(--blue-dark);
@@ -90,4 +93,8 @@
 .active-item-nav{
     background-color: var(--pink-light);
     border-radius: 30px;
+}
+/*CONTAINER GENERAL ---------------------------*/
+.general-container{
+    padding-top: 150px;
 }

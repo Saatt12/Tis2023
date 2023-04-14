@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="separation-content-login"></div>
-    <div class="container">
+    <div class="container general-container">
         <div class="row justify-content-center">
             <div class="col-6">
                 <img class="image-park mt-2" src="{{ asset('images/background_parqueo.png') }}" alt="">

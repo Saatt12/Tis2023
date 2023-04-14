@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-   <div class="main-content-panel position-fixed h-100 w-100 d-flex">
+   <div class="main-content-panel position-fixed h-100 w-100 d-flex general-container">
        <nav class="navbar-content-fix bg-blue-dark-light h-100">
            <div>
                <div class="title-nav d-flex align-items-center justify-content-center">
@@ -13,7 +13,7 @@
                    <li>
                        <a
                            class="@if(@$type_list==='cliente') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn "
-                           href="" >Lista Clientes </a>
+                           href="{{ url('/home') }}" >Lista Clientes </a>
                    </li>
                    <li>
                        <a
@@ -29,14 +29,14 @@
                    <li>
                        <a
                            class="@if(@$type_list==='schedules') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
-                           href="" >Lista de Horarios </a>
+                           href="{{ url('/horarios') }}" >Lista de Horarios </a>
                    </li>
                </ul>
            </div>
        </nav>
-       <div class="w-100">
+       <div class="w-100 overflow-auto">
            <div class="bg-blue-dark-light-2 d-flex justify-content-between py-3 px-3">
-               <h4 class="text-pink-light">Nombre lista</h4>
+               <h4 class="text-pink-light">{{ @$title }}</h4>
                <div>
                    <div class=" dropdown  item-avatar">
                        <div id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

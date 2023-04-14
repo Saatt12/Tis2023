@@ -18,8 +18,14 @@ use Illuminate\Support\Facades\Route;
 });*/
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Auth::routes();
+//clientes
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::delete('/users/{id}', [App\Http\Controllers\HomeController::class, 'destroy'])->name('users.destroy');
 Route::get('/users/{id}', [App\Http\Controllers\HomeController::class, 'show'])->name('users.show');
 Route::put('/users/{id}',  [App\Http\Controllers\HomeController::class, 'update'])->name('users.update');
+//empleados
 
+//horarios
+Route::get('/horarios', [App\Http\Controllers\HomeController::class, 'list_horarios'])->name('horario');
+Route::get('/horarios/create', [App\Http\Controllers\HomeController::class, 'horarios_create'])->name('horario.create');
+Route::post('/horarios', [App\Http\Controllers\HomeController::class, 'horarios_store'])->name('horario.store');

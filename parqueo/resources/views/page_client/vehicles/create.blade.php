@@ -2,8 +2,8 @@
 
 @section('content-admin')
     <div class="w-100 px-3">
-        <div class="row justify-content-center">
-            <div class="col-4">
+        <div class="row justify-content-center mt-4">
+            <div class="col-8 col-md-6 col-lg-4">
                 <div class="bg-red-cherry text-white py-3 mb-2">
                     <h3 class="text-center">Registrar Vehiculos</h3>
                 </div>
@@ -71,14 +71,12 @@
                         </div>
                     </div>
                     <div class="row mb-5 justify-content-center">
-                        <div class="col-md-3"></div>
-
-                        <div class="col-md-4">
+                        <div class="col-12 col-sm-4">
                             <button type="submit" class="btn btn-primary bg-blue-dark">
                                 Aceptar
                             </button>
                         </div>
-                        <div class="col-md-4 ">
+                        <div class="col-12 col-sm-4">
                             <a class="btn btn-primary bg-blue-dark" href="{{ url('/client') }}">
                                 Cancelar
                             </a>

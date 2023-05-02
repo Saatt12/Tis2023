@@ -21,12 +21,14 @@ class ClientController extends Controller
     public function index()
     {
         $users = User::all();
+        $vehicles = Vehicle::all();
         $type_list = 'cliente';
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
             'users'=>$users,
             'type_list' =>$type_list,
-            'title'=>$title
+            'title'=>$title,
+            'vehicles'=>$vehicles
         ]);
     }
     /**

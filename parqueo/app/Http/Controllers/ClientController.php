@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -91,5 +93,28 @@ class ClientController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function vehicle_create()
+    {
+        return view('page_client.vehicles.create');
+    }
+    public function vehicle_store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'placa' => ['required', 'string', 'max:255'],
+            'marca' => ['required', 'string', 'max:255'],
+            'modelo' => ['required', 'string', 'max:255'],
+            "image"=>['required'],
+        ]);
+        $requestData = $request->all();
+        $requestData["user_id"] = Auth::id();
+        $image = $request->file('image');
+        if ($image) {
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/vehicles', $filename);
+            $requestData['image'] = 'vehicles/'.$filename;
+        }
+        Vehicle::create($requestData);
+        return redirect()->route('home_client');
     }
 }

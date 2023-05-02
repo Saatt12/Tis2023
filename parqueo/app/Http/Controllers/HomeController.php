@@ -197,12 +197,12 @@ class HomeController extends Controller
         $type_list = 'employee';
         $title='Editar de Empleado';
         return view('pages.employees.show', [
-            'user' => $user,
-            "cargos"=>$cargos,
-            "unidades"=>$unidades,
-            'type_list' =>$type_list,
-            'title'=>$title,
-            'roles'=>$roles
+            "user" => $user,
+            "cargos"=> $cargos,
+            "unidades"=> $unidades,
+            "type_list" => $type_list,
+            "title"=> $title,
+            "roles"=> $roles
         ]);
     }
     public function employee_update(Request $request, $id)

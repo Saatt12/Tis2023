@@ -43,5 +43,16 @@ Route::put('/employees/{id}',  [App\Http\Controllers\HomeController::class, 'emp
 Route::delete('/employees/{id}', [App\Http\Controllers\HomeController::class, 'employee_destroy'])->name('employee.destroy');
 
 //CLIENTES
-Route::get('/client', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
-//Route::post('/client', [YourController::class, 'store'])->name('your-route-name');
+Route::prefix('client')->group(function () {
+    Route::controller(App\Http\Controllers\ClientController::class)->group(function () {
+        Route::get('/', 'index')->name('home_client');
+        //register vehicle
+        Route::post('/vehicle','vehicle_store')->name('vehicle.store');
+        Route::get('/vehicles','vehicles')->name('vehicles');
+        Route::get('/vehicle','vehicle_create')->name('vehicle.show');
+    });
+   /* Route::get('/', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
+    //register vehicle
+    Route::post('/vehicle', [App\Http\Controllers\ClientController::class, 'vehicle_create'])->name('vehicle.create');
+    Route::get('/vehicles', [App\Http\Controllers\ClientController::class, 'vehicle_create'])->name('vehicles');*/
+});

@@ -36,9 +36,8 @@
                                     <div class="py-3">
                                         <div class="form-floating">
                                             <input id="password" type="password"
-                                                class="form-control @error('password') is-invalid @enderror"
-                                                name="password" required autocomplete="current-password"
-                                                placeholder="Password">
+                                                class="form-control @error('password') is-invalid @enderror" name="password"
+                                                required autocomplete="current-password" placeholder="Password">
                                             <label for="password" for="password">Contraseña</label>
                                         </div>
                                         @error('password')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="main-content-panel position-fixed h-100 w-100 d-flex general-container">
+    <div class="main-content-panel position-fixed h-100 w-100 d-flex general-container z-i-101">
         {{-- <nav class="navbar-content-fix bg-blue-dark-light h-100">
             <div>
                 <div class="title-nav d-flex align-items-center justify-content-center">
@@ -66,4 +66,7 @@
 
         </div>
     </div>
+@endsection
+@section('scripts_news')
+    @yield('scripts')
 @endsection

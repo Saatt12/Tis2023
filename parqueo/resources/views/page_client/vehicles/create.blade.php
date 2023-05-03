@@ -59,7 +59,7 @@
                                class="col-md-4 col-form-label">Foto</label>
 
                         <div class="col-md-6">
-                            <input id="image" type="file"
+                            <input id="image" type="file" accept="image/*"
                                    class="form-control @error('image') is-invalid @enderror" name="image"
                                    value="" required autocomplete="image">
 

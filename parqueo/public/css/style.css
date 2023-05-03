@@ -25,6 +25,10 @@
 .z-i-100{
     z-index: 100;
 }
+.z-i-101{
+     z-index: 101;
+ }
+
 /*TEXTS----------------------------------------- */
 .text-blue-dark{
     color: var(--blue-dark);

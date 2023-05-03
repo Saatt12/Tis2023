@@ -13,7 +13,8 @@
                     </div>
                     <div class="col-5">
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="" class="btn btn-danger bg-red-cherry me-3">Pagar</a>
+                            <a href="" class="btn btn-danger bg-red-cherry me-3" data-bs-toggle="modal"
+                               data-bs-target="#payment_mode_">Pagar</a>
                             <a href="" class="btn btn-danger bg-red-cherry">Lista recibos</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
@@ -37,6 +38,7 @@
                         </div>
                     @endfor
                 </div>
+{{--                REGISTER VEHICLE                   --}}
                 <!-- Modal -->
                 <div class="modal fade" id="vehicle_registered_" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="vehicle_registered_Label" aria-hidden="true">
@@ -134,10 +136,55 @@
                         </div>
                     </div>
                 @endforeach
+{{--                REGISTER PAYMENT --}}
+            <!-- Modal -->
+                <div class="modal fade" id="payment_mode_" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="payment_mode_Label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-red-cherry text-pink-light justify-content-center">
+                                <h1 class="modal-title fs-5 text-center" id="payment_mode_Label">Vehiculos registrados
+                                </h1>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <form action="">
+                                        <div class="row mb-3">
+                                            <label for="cargo" class="col-md-4 col-form-label">Modalidad de Pago</label>
+                                            <div class="col-md-6">
+                                                <select id="type" class="form-control"
+                                                        name="type" required autofocus>
+                                                    <option value="" selected> Selecciona una Unidad</option>
+                                                    <option value="qr"> Qr</option>
+                                                    <option value="manual"> Manual</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-4">
+                                                <button type="button" class="btn btn-secondary bg-blue-dark"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="submit" class="btn btn-secondary bg-blue-dark"
+                                                        data-bs-dismiss="modal">Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
-    <script></script>
+    <script>
+        $('#type')
+
+    </script>
 @endsection

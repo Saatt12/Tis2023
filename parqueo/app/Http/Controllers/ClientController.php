@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -118,5 +119,11 @@ class ClientController extends Controller
         }
         Vehicle::create($requestData);
         return redirect()->route('home_client');
+    }
+    public function payment_store(Request $request){
+        $requestData = $request->all();
+        $requestData["user_id"] = Auth::id();
+        $payment = Payment::create($requestData);
+        return response()->json($payment);
     }
 }

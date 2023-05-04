@@ -10,6 +10,16 @@
                 <form class="ps-3" method="POST" action="{{ route('vehicle.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
+                        <label for="user"
+                               class="col-md-4 col-form-label">Propietario</label>
+
+                        <div class="col-md-6">
+                            <input id="user" type="text"
+                                   class="form-control" readonly
+                                   value="{{auth()->user()->name}}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="name" class="col-md-4 col-form-label">Placa</label>
 
                         <div class="col-md-6">

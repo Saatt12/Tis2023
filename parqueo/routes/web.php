@@ -50,6 +50,10 @@ Route::prefix('client')->group(function () {
         Route::post('/vehicle','vehicle_store')->name('vehicle.store');
         Route::get('/vehicles','vehicles')->name('vehicles');
         Route::get('/vehicle','vehicle_create')->name('vehicle.show');
+        //payment
+        Route::post('/payment','payment_store')->name('payment.store');
+        Route::get('/payments','payments')->name('payments');
+
     });
    /* Route::get('/', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
     //register vehicle

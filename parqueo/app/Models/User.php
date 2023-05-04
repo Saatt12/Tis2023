@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return User::where('id',$this->id)->where('rol_id', $role)->first();
     }
+    public function hasRoleName($role)
+    {
+        $user = User::where('id',$this->id)->first();
+        return Rol::where('id',$user->rol_id)->where('nom_role', $role)->first();
+    }
 }

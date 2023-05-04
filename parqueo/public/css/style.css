@@ -53,6 +53,15 @@
     background-color: var(--blue-light) !important;
     color: var(--blue-dark-2);
 }
+
+/*SHOW INTERACTIVE ----------------------------------*/
+.dis-none{
+    display: none;
+}
+/*Validation form style -----------------------------*/
+.error{
+    color: red;
+}
 /*LOGIN----------------------------------------- */
 .navbar-image-logo{
     max-height: 130px;

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
+use App\Models\Message;
+use App\Models\Parking;
 use App\Models\Payment;
+use App\Models\RequestForm;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -21,15 +25,18 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $vehicles = Vehicle::all();
+        $user_auth= auth()->user();
+        $vehicles = Vehicle::where('user_id',$user_auth->id)->get();
+        $payments = Payment::where('user_id',$user_auth->id)->get();
+        $parkings = Parking::all();
         $type_list = 'cliente';
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
-            'users'=>$users,
             'type_list' =>$type_list,
             'title'=>$title,
-            'vehicles'=>$vehicles
+            'vehicles'=>$vehicles,
+            'payments'=>$payments,
+            'parkings'=>$parkings
         ]);
     }
     /**
@@ -125,5 +132,59 @@ class ClientController extends Controller
         $requestData["user_id"] = Auth::id();
         $payment = Payment::create($requestData);
         return response()->json($payment);
+    }
+
+    //REQUEST FORM
+    public function request_form(Request $request){
+        $user = Auth::user();
+        $request_form = RequestForm::where('user_id',$user->id)->first();
+        if(!$request_form){
+            RequestForm::create([
+                'user_id'=>$user->id
+            ]);
+        }
+        $request->session()->flash('success', 'Se envio la solicitud correctamente');
+        return redirect('/client');
+    }
+    //CLAIMS
+    public function claims(){
+        $messages=[];
+        $user = Auth::user();
+        $claim = Claim::where('client_id',$user->id)->first();
+        if($claim){
+            $messages = Message::where('claim_id',$claim->id)->get();
+        }
+        return view('page_client.claims.message')
+            ->with([
+                'messages'=> $messages
+            ]);
+    }
+    public function claim_store(Request $request){
+        $user = Auth::user();
+        $message = $request->message;
+        $message_file = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Perform operations on the file, such as storing it, manipulating it, etc.
+
+            //return "File uploaded successfully.";
+        }
+        if($message){
+            $claim = Claim::where('client_id',$user->id)->first();
+            if(!$claim){
+                $claim = Claim::create([
+                   "client_id"=>$user->id
+                ]);
+            }
+            $data_sms = [
+                'content'=> $message,
+                'type'=>'text',
+                'sender_id'=>$user->id,
+                'claim_id'=>$claim->id
+            ];
+            Message::create($data_sms);
+        }
+        return redirect()->route('claims.index');
     }
 }

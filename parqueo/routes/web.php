@@ -53,7 +53,11 @@ Route::prefix('client')->group(function () {
         //payment
         Route::post('/payment','payment_store')->name('payment.store');
         Route::get('/payments','payments')->name('payments');
-
+        //Request
+        Route::post('/request_form','request_form')->name('request_form.store');
+        //Claims
+        Route::get('/claims','claims')->name('claims.index');
+        Route::post('/claim','claim_store')->name('claim.store');
     });
    /* Route::get('/', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
     //register vehicle

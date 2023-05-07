@@ -41,6 +41,17 @@ Route::post('/employees', [App\Http\Controllers\HomeController::class, 'employee
 Route::get('/employees/{id}', [App\Http\Controllers\HomeController::class, 'employee_show'])->name('employee.show');
 Route::put('/employees/{id}',  [App\Http\Controllers\HomeController::class, 'employee_update'])->name('employee.update');
 Route::delete('/employees/{id}', [App\Http\Controllers\HomeController::class, 'employee_destroy'])->name('employee.destroy');
+//Requests
+Route::get('/requests', [App\Http\Controllers\HomeController::class, 'list_requests'])->name('request');
+Route::post('/requests', [App\Http\Controllers\HomeController::class, 'assign_request'])->name('request.store');
+Route::post('/search_request', [App\Http\Controllers\HomeController::class, 'search_request'])->name('search_request');
+Route::delete('/requests', [App\Http\Controllers\HomeController::class, 'remove_request'])->name('request.delete');
+Route::put('/manual_request', [App\Http\Controllers\HomeController::class, 'manual_request'])->name('request.update');
+//Claims
+Route::get('/claims', [App\Http\Controllers\HomeController::class, 'list_claims'])->name('claims');
+Route::get('/claims_messages/{claim_id}', [App\Http\Controllers\HomeController::class, 'claims_messages'])->name('claims_messages');
+Route::post('/send_claim_message', [App\Http\Controllers\HomeController::class, 'send_claim_message'])->name('send_claim_message');
+
 
 //CLIENTES
 Route::prefix('client')->group(function () {

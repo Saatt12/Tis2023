@@ -16,15 +16,19 @@
                     </li>
                     <li>
                         <a class="@if (@$type_list === 'request') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
-                            href="">Solicitud Clientes </a>
+                            href="{{ url('/requests') }}">Solicitud Clientes </a>
                     </li>
                     <li>
                         <a class="@if (@$type_list === 'employee') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
-                            href="{{ url('/employees') }}"href="">Lista de Empleados </a>
+                            href="{{ url('/employees') }}">Lista de Empleados </a>
                     </li>
                     <li>
                         <a class="@if (@$type_list === 'schedules') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                             href="{{ url('/horarios') }}">Lista de Horarios </a>
+                    </li>
+                    <li>
+                        <a class="@if (@$type_list === 'claims') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="{{ url('/claims') }}">Reclamos</a>
                     </li>
                 </ul>
             </div>
@@ -32,6 +36,7 @@
         <div class="w-100 overflow-auto">
             <div class="bg-blue-dark-light-2 d-flex justify-content-between py-3 px-3">
                 <h4 class="text-pink-light">{{ @$title }}</h4>
+                @yield('subhead-custom')
                 <div>
                     <div class=" dropdown  item-avatar">
                         <div id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -61,4 +66,7 @@
 
         </div>
     </div>
+@endsection
+@section('scripts_news')
+    @yield('scripts')
 @endsection

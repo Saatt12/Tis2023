@@ -29,6 +29,7 @@ class ClientController extends Controller
         $vehicles = Vehicle::where('user_id',$user_auth->id)->get();
         $payments = Payment::where('user_id',$user_auth->id)->get();
         $parkings = Parking::all();
+        $my_request = RequestForm::where('user_id',$user_auth->id)->whereNotNull('parking_id')->first();
         $type_list = 'cliente';
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
@@ -36,7 +37,8 @@ class ClientController extends Controller
             'title'=>$title,
             'vehicles'=>$vehicles,
             'payments'=>$payments,
-            'parkings'=>$parkings
+            'parkings'=>$parkings,
+            'my_request'=>$my_request
         ]);
     }
     /**

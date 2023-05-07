@@ -41,7 +41,11 @@
                 <div class="row align-content-stretch">
                     @foreach ($parkings as $parking)
                         <div class="col-2">
-                            <p>{{ $parking->name }}</p>
+                            @if($parking->status==='unavailable')
+                                <p class="{{@$my_request && $my_request->parking_id ===$parking->id?'text-blue-dark':'text-red-cherry'}}">{{ $parking->name }}</p>
+                            @else
+                                <p>{{ $parking->name }}</p>
+                            @endif
                         </div>
                     @endforeach
                 </div>

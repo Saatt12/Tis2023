@@ -15,7 +15,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <button class="btn btn-primary my-2">Enviar Mensaje </button>
+    <a href="{{url('/messages_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
     <table class="table table-striped table-blue-light">
         <thead>
         <tr>
@@ -31,7 +31,7 @@
                     class="btn btn-primary bg-blue-dark"
                     data-bs-toggle="modal"
                     data-bs-target="#reject-modal"
-                    onclick="addDataChecks('selected_checks_reject')"
+                    onclick="addDataChecks('claims_requests')"
                 >
                     Eliminar
                 </button>
@@ -62,37 +62,15 @@
         @endforeach
         </tbody>
     </table>
-        <x-generic-modal name="assign-modal" title="Confirmar">
-            <x-slot name="content" class="">
-                <form action="{{ route('request.store') }}" method="POST">
-                    @csrf
-                    <p>
-                        ¿Desea aceptar esta cuenta?
-                    </p>
-                    <input type="hidden" id="selected_checks" name="request_ids">
-                    <div class="row justify-content-center">
-                        <div class="col-4">
-                            <button type="button" class="btn btn-secondary bg-blue-dark"
-                                    data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-secondary bg-blue-dark"
-                                    data-bs-dismiss="modal">Aceptar</button>
-                        </div>
-                    </div>
-                </form>
-            </x-slot>
-            <x-slot name="buttons" class=""></x-slot>
-        </x-generic-modal>
     <x-generic-modal name="reject-modal" title="Confirmar">
         <x-slot name="content" class="">
-            <form action="{{ route('request.delete') }}" method="POST">
+            <form action="{{ route('messages_emails.delete') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <p>
-                    ¿Deseas rechazar la(s) solicitud(es)?
+                    ¿Deseas eliminar estos reclamos?
                 </p>
-                <input type="hidden" id="selected_checks_reject" name="request_ids">
+                <input type="hidden" id="claims_requests" name="claim_ids">
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <button type="button" class="btn btn-secondary bg-blue-dark"

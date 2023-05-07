@@ -8,7 +8,7 @@
                     <h4 class="text-center mb-0">Chat</h4>
                 </div>
                 <div class="content-chat position-relative">
-                    <div class="chat-body">
+                    <div id="body-chat" class="chat-body">
                         @foreach($messages as $message)
                             @if($message->sender_id === auth()->id())
                             <div class="right-content-chat my-2">
@@ -51,4 +51,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#body-chat').scrollTop($(document).height());
+        });
+    </script>
 @endsection

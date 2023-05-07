@@ -30,6 +30,10 @@
                         <a class="@if (@$type_list === 'claims') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                            href="{{ url('/claims') }}">Reclamos</a>
                     </li>
+                    <li>
+                        <a class="@if (@$type_list === 'parking') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="{{ url('/parking') }}">Parquero</a>
+                    </li>
                 </ul>
             </div>
         </nav>

@@ -51,6 +51,14 @@ Route::put('/manual_request', [App\Http\Controllers\HomeController::class, 'manu
 Route::get('/claims', [App\Http\Controllers\HomeController::class, 'list_claims'])->name('claims');
 Route::get('/claims_messages/{claim_id}', [App\Http\Controllers\HomeController::class, 'claims_messages'])->name('claims_messages');
 Route::post('/send_claim_message', [App\Http\Controllers\HomeController::class, 'send_claim_message'])->name('send_claim_message');
+Route::get('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails'])->name('messages_emails');
+Route::post('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_store'])->name('messages_emails.store');
+Route::delete('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_remove'])->name('messages_emails.delete');
+
+//Parkings
+Route::get('/parking', [App\Http\Controllers\HomeController::class, 'parking'])->name('parking.index');
+Route::get('/vehicles', [App\Http\Controllers\HomeController::class, 'vehicles'])->name('parking.vehicles');
+Route::post('/search_vehicles', [App\Http\Controllers\HomeController::class, 'search_vehicles'])->name('search_vehicles');
 
 
 //CLIENTES

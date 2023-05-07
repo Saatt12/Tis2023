@@ -11,6 +11,7 @@ use App\Models\RequestForm;
 use App\Models\Rol;
 use App\Models\Unidad;
 use App\Models\User;
+use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -351,5 +352,79 @@ class HomeController extends Controller
             }
         }
         return redirect('/claims_messages/'.$claim_id);
+    }
+    public function messages_emails(){
+        $type_list = 'claims';
+        $title='Messages';
+        $clients = User::where('rol_id', $this->role_client)->get();
+        return view('pages.claims.correos')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'clients' => $clients
+        ]);
+    }
+    public function messages_emails_store(Request $request){
+        $user = Auth::user();
+        $receivers = explode(',',$request->receivers);
+        if($request->message){
+            foreach ($receivers as $client_id){
+                $claim = Claim::where('client_id',$client_id)->first();
+                if(!$claim){
+                    $claim = Claim::create(['client_id'=>$client_id]);
+                }
+                $data_sms = [
+                    'content'=> $request->message,
+                    'type'=>'text',
+                    'sender_id'=>$user->id,
+                    'claim_id'=>$claim->id
+                ];
+                Message::create($data_sms);
+            }
+        }
+        $request->session()->flash('success', 'Se envio correctamente el mensaje los clientes seleccionados');
+        return redirect('/messages_emails');
+    }
+    public function messages_emails_remove(Request $request){
+        $claim_ids = explode(',',$request->claim_ids);
+        Message::whereIn('claim_id', $claim_ids)->delete();
+        Claim::whereIn('id', $claim_ids)->delete();
+        return redirect('/claims');
+    }
+    public function parking(){
+        $type_list = 'parking';
+        $title='Parquero';
+        $parkings = Parking::all();
+        $vehicles = Vehicle::all();
+//        $clients = User::where('rol_id', $this->role_client)->get();
+        return view('pages.parking.show')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'parkings'=>$parkings
+//            'clients' => $clients
+        ]);
+    }
+    public function vehicles(Request $request){
+        $type_list = 'parking';
+        $title='Parquero';
+        $keyword='';
+        $vehicles = [];
+        if($request && $request->keyword){
+            $keyword=$request->keyword;
+            $vehicles = Vehicle::where('marca', 'ILIKE', '%' . $request->keyword . '%')
+                ->orWhere('modelo', 'ILIKE', '%' . $request->keyword . '%')->get();
+        }else{
+            $vehicles = Vehicle::all();
+        }
+        return view('pages.parking.list_vehicles')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'keyword' =>$keyword,
+            'vehicles'=>$vehicles
+        ]);
+    }
+    public function search_vehicles(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        return redirect()->route('parking.vehicles',['keyword' => $keyword]);
     }
 }

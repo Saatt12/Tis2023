@@ -31,6 +31,15 @@ class ClientController extends Controller
         $parkings = Parking::all();
         $my_request = RequestForm::where('user_id',$user_auth->id)->whereNotNull('parking_id')->first();
         $type_list = 'cliente';
+        $news_messages = 0;
+        $claim = Claim::where('client_id',$user_auth->id)->first();
+        if($claim){
+            $news_messages = Message::where('claim_id',$claim->id)
+                    ->where('is_read',false)
+                    ->where('sender_id','!=',$user_auth->id)
+                    ->count();
+        }
+
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
             'type_list' =>$type_list,
@@ -38,7 +47,8 @@ class ClientController extends Controller
             'vehicles'=>$vehicles,
             'payments'=>$payments,
             'parkings'=>$parkings,
-            'my_request'=>$my_request
+            'my_request'=>$my_request,
+            'news_messages'=>$news_messages
         ]);
     }
     /**
@@ -154,6 +164,7 @@ class ClientController extends Controller
         $user = Auth::user();
         $claim = Claim::where('client_id',$user->id)->first();
         if($claim){
+            Message::where('claim_id',$claim->id)->update(['is_read'=>true]);
             $messages = Message::where('claim_id',$claim->id)->get();
         }
         return view('page_client.claims.message')

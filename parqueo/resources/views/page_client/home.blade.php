@@ -34,7 +34,12 @@
                                 data-bs-target="#modal-request">Solicitud de parqueo</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="{{ url('/client/claims') }}" class="btn btn-primary bg-blue-dark">Reclamos</a>
+                            <a href="{{ url('/client/claims') }}" class="btn btn-primary bg-blue-dark">
+                                Reclamos
+                                @if(@$news_messages && @$news_messages>0)
+                                    <span class="badge badge-light bg-white text-black">{{$news_messages}}</span>
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </div>

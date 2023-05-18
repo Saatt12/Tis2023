@@ -12,7 +12,7 @@
 
                 <ul class="list-unstyled ps-3">
 
-                    @if(@auth()->user()->rol->nom_role!=="PARQUERO")
+                    @if(@auth()->user()->rol->nom_role!=="GUARDIA")
                     <li>
                         <a class="@if (@$type_list === 'cliente') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn "
                             href="{{ url('/home') }}">Lista Clientes </a>
@@ -38,7 +38,7 @@
                            href="{{ url('/parking') }}">Parquero</a>
                     </li>
                     @endif
-                    @if(@auth()->user()->rol->nom_role==="PARQUERO")
+                    @if(@auth()->user()->rol->nom_role==="GUARDIA")
                     <li>
                         <a class="@if (@$type_list === 'claims') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                            href="{{ url('/claims') }}">Mensajes</a>

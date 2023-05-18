@@ -39,7 +39,7 @@ class LoginController extends Controller
     }
     protected function authenticated(Request $request, $user)
     {
-        if ($user->hasRole('1') || $user->hasRoleName('PROVIDER')) {
+        if ($user->hasRole('1') || $user->hasRoleName('PROVIDER') || $user->hasRoleName('PARQUERO')) {
             return redirect()->route('home');
         } else {
             return redirect()->route('home_client');

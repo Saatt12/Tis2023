@@ -32,7 +32,7 @@
 
 
                                 <div class="col-md-4 ">
-                                    <a class="btn btn-primary bg-blue-dark" href="{{ url('/home') }}">
+                                    <a class="btn btn-primary bg-blue-dark" href="{{ url('/claims') }}">
                                         Cancelar
                                     </a>
                                 </div>

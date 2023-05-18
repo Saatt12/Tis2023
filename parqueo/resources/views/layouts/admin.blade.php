@@ -9,7 +9,10 @@
                 <hr>
             </div>
             <div>
+
                 <ul class="list-unstyled ps-3">
+
+                    @if(@auth()->user()->rol->nom_role!=="PARQUERO")
                     <li>
                         <a class="@if (@$type_list === 'cliente') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn "
                             href="{{ url('/home') }}">Lista Clientes </a>
@@ -34,6 +37,13 @@
                         <a class="@if (@$type_list === 'parking') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                            href="{{ url('/parking') }}">Parquero</a>
                     </li>
+                    @endif
+                    @if(@auth()->user()->rol->nom_role==="PARQUERO")
+                    <li>
+                        <a class="@if (@$type_list === 'claims') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="{{ url('/claims') }}">Mensajes</a>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </nav>

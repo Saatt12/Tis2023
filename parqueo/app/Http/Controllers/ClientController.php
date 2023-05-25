@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\Claim;
 use App\Models\Message;
 use App\Models\Parking;
@@ -10,6 +11,7 @@ use App\Models\RequestForm;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
@@ -39,7 +41,7 @@ class ClientController extends Controller
                     ->where('sender_id','!=',$user_auth->id)
                     ->count();
         }
-
+        $announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
             'type_list' =>$type_list,
@@ -48,7 +50,8 @@ class ClientController extends Controller
             'payments'=>$payments,
             'parkings'=>$parkings,
             'my_request'=>$my_request,
-            'news_messages'=>$news_messages
+            'news_messages'=>$news_messages,
+            'announcement' =>$announcement
         ]);
     }
     /**

@@ -37,12 +37,20 @@
                         <a class="@if (@$type_list === 'parking') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                            href="{{ url('/parking') }}">Parquero</a>
                     </li>
+                    <li>
+                        <a class="@if (@$type_list === 'reports') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="{{ url('/reports') }}">Reportes</a>
+                    </li>
+                    <li>
+                        <a class="@if (@$type_list === 'conversations') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                           href="{{ url('/conversations') }}">Mensajes</a>
+                    </li>
                     @endif
                     @if(@auth()->user()->rol->nom_role==="GUARDIA")
-                    <li>
-                        <a class="@if (@$type_list === 'claims') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
-                           href="{{ url('/claims') }}">Mensajes</a>
-                    </li>
+                        <li>
+                            <a class="@if (@$type_list === 'parking') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                               href="{{ url('/parking') }}">Parquero</a>
+                        </li>
                     @endif
                 </ul>
             </div>

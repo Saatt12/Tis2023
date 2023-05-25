@@ -60,6 +60,36 @@ Route::get('/parking', [App\Http\Controllers\HomeController::class, 'parking'])-
 Route::get('/vehicles', [App\Http\Controllers\HomeController::class, 'vehicles'])->name('parking.vehicles');
 Route::post('/search_vehicles', [App\Http\Controllers\HomeController::class, 'search_vehicles'])->name('search_vehicles');
 
+//Announcement
+Route::get('/announcements', [App\Http\Controllers\HomeController::class, 'list_announcements'])->name('announcement');
+Route::get('/announcements/create', [App\Http\Controllers\HomeController::class, 'announcement_create'])->name('announcement.create');
+Route::post('/announcements', [App\Http\Controllers\HomeController::class, 'announcement_store'])->name('announcement.store');
+Route::get('/announcements/{id}', [App\Http\Controllers\HomeController::class, 'announcement_show'])->name('announcement.show');
+Route::put('/announcements/{id}',  [App\Http\Controllers\HomeController::class, 'announcement_update'])->name('announcement.update');
+Route::delete('/announcements/{id}', [App\Http\Controllers\HomeController::class, 'announcement_destroy'])->name('announcement.destroy');
+
+//Hours Vehicles
+Route::get('/hours_vehicles', [App\Http\Controllers\HomeController::class, 'list_hours_vehicles'])->name('hours_vehicle');
+Route::get('/hours_vehicles/create', [App\Http\Controllers\HomeController::class, 'hours_vehicles_create'])->name('hours_vehicle.create');
+Route::post('/hours_vehicles', [App\Http\Controllers\HomeController::class, 'hours_vehicles_store'])->name('hours_vehicle.store');
+Route::get('/hours_vehicles/{id}', [App\Http\Controllers\HomeController::class, 'hours_vehicle_show'])->name('hours_vehicle.show');
+Route::put('/hours_vehicles/{id}',  [App\Http\Controllers\HomeController::class, 'hours_vehicle_update'])->name('hours_vehicle.update');
+Route::delete('/hours_vehicles/{id}', [App\Http\Controllers\HomeController::class, 'hours_vehicle_destroy'])->name('hours_vehicle.destroy');
+
+//Reports
+Route::get('/reports', [App\Http\Controllers\HomeController::class, 'reports'])->name('reports');
+Route::get('/reports/users', [App\Http\Controllers\HomeController::class, 'reports_users'])->name('reports_users');
+Route::get('/reports/payments', [App\Http\Controllers\HomeController::class, 'reports_payments'])->name('reports_payments');
+Route::get('/reports/announcement', [App\Http\Controllers\HomeController::class, 'reports_announcement'])->name('reports_announcement');
+
+//Conversation
+Route::get('/conversations', [App\Http\Controllers\HomeController::class, 'list_conversations'])->name('conversations');
+Route::get('/conversations_messages/{conversation_id}', [App\Http\Controllers\HomeController::class, 'conversations_messages'])->name('conversations_messages');
+Route::post('/send_conversation_message', [App\Http\Controllers\HomeController::class, 'send_conversation_message'])->name('send_conversation_message');
+//Route::get('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails'])->name('messages_emails');
+//Route::post('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_store'])->name('messages_emails.store');
+//Route::delete('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_remove'])->name('messages_emails.delete');
+
 
 //CLIENTES
 Route::prefix('client')->group(function () {

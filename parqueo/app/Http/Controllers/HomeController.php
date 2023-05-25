@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\Cargo;
 use App\Models\Claim;
+use App\Models\Conversation;
 use App\Models\Horario;
 use App\Models\Message;
 use App\Models\Parking;
@@ -16,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class HomeController extends Controller
 {
@@ -427,4 +430,136 @@ class HomeController extends Controller
         $keyword = $request->input('keyword');
         return redirect()->route('parking.vehicles',['keyword' => $keyword]);
     }
+
+    //ANNOUNCEMENTS-----------------------------------------------------------------------
+    public function list_announcements(){
+        $type_list = 'parking';
+        $title='Convocatoria';
+        $announcement = Announcement::all();
+        return view('pages.parking.list_announcement')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'announcements' => $announcement
+        ]);
+    }
+    public function announcement_create(){
+        $type_list = 'parking';
+        $title='Convocatoria';
+        return view('pages.announcements.create',[
+                'type_list' =>$type_list,
+                'title'=>$title,
+            ]
+        );
+
+    }
+    public function announcement_store(Request $request){
+        $validatedData = $request->validate([
+            'fecha_inicio'=>['required'],
+            'fecha_fin'=>['required'],
+            'descuento'=>['required'],
+            'multa'=>['required'],
+            'monto_mes'=>['required'],
+            'monto_multa'=>['required'],
+            'monto_descuento'=>['required'],
+            'monto_anual'=>['required'],
+            'cantidad_espacios'=>['required'],
+            'image'=>['required'],
+        ]);
+        $requestData = $request->all();
+        $image = $request->file('image');
+
+        if ($image) {
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/announcement', $filename);
+            $requestData['image'] = 'announcement/'.$filename;
+        }
+        Announcement::create($requestData);
+        return redirect('/parking');
+    }
+    //CONVERSATIONS
+    public function list_conversations(){
+        $type_list = 'conversations';
+        $title='Mensajes';
+        $conversations = Conversation::all();
+        return view('pages.conversations.list')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'conversations' => $conversations
+        ]);
+    }
+    public function conversations_messages(Request $request){
+        $type_list = 'conversations';
+        $title='Messages';
+        $messages = Message::where('conversation_id',$request->conversation_id)->get();
+        $conversation = Claim::where('id',$request->conversation_id)->first();
+        return view('pages.conversations.message')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'messages' => $messages,
+            'conversation' => $conversation
+        ]);
+    }
+    public function send_conversation_message(Request $request){
+        $user = Auth::user();
+        $message = $request->message;
+        $conversation_id = $request->conversation_id;
+        $message_file = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Perform operations on the file, such as storing it, manipulating it, etc.
+
+            //return "File uploaded successfully.";
+        }
+        if($message){
+            $conversation = Claim::where('id',$conversation_id)->first();
+            if($conversation){
+                $data_sms = [
+                    'content'=> $message,
+                    'type'=>'text',
+                    'sender_id'=>$user->id,
+                    'conversation_id'=>$conversation_id
+                ];
+                Message::create($data_sms);
+            }
+        }
+        return redirect('/conversations_messages/'.$conversation_id);
+    }
+    /*public function messages_emails(){
+        $type_list = 'claims';
+        $title='Messages';
+        $clients = User::where('rol_id', $this->role_client)->get();
+        return view('pages.claims.correos')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'clients' => $clients
+        ]);
+    }
+    public function messages_emails_store(Request $request){
+        $user = Auth::user();
+        $receivers = explode(',',$request->receivers);
+        if($request->message){
+            foreach ($receivers as $client_id){
+                $claim = Claim::where('client_id',$client_id)->first();
+                if(!$claim){
+                    $claim = Claim::create(['client_id'=>$client_id]);
+                }
+                $data_sms = [
+                    'content'=> $request->message,
+                    'type'=>'text',
+                    'sender_id'=>$user->id,
+                    'claim_id'=>$claim->id
+                ];
+                Message::create($data_sms);
+            }
+        }
+        $request->session()->flash('success', 'Se envio correctamente el mensaje los clientes seleccionados');
+        return redirect('/messages_emails');
+    }
+    public function messages_emails_remove(Request $request){
+        $claim_ids = explode(',',$request->claim_ids);
+        Message::whereIn('claim_id', $claim_ids)->delete();
+        Claim::whereIn('id', $claim_ids)->delete();
+        return redirect('/claims');
+    }*/
 }

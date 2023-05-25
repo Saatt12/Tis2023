@@ -13,8 +13,14 @@
                     <img class="w-100" src="{{ asset('images/photo_parqueo.svg') }}" alt="">
                 </div>
                 <div class="col-5 d-flex align-items-center justify-content-center">
+                    <div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <a href="{{url('/announcements/create')}}" class="btn btn-danger bg-red-cherry me-4">Convocatoria</a>
+                        <a href="{{url('/announcements')}}" class="btn btn-danger bg-red-cherry">Lista Convocatoria</a>
+                    </div>
                     <div class="d-flex justify-content-center mb-4">
                         <a href="{{url('/vehicles')}}" class="btn btn-danger bg-red-cherry">Vehiculos registrados</a>
+                    </div>
                     </div>
                 </div>
             </div>

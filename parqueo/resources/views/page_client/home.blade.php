@@ -8,8 +8,12 @@
     @endif
     <div class="w-100 px-3">
         <div class="row">
-            <div class="col-3">
-                <img class="img-fluid" src="{{ asset('images/advertising.png') }}" alt="">
+            <div class="col-3 pt-3">
+                @if(@$announcement && @$announcement->image)
+                    <img class="img-fluid" src="{{asset('storage/'.$announcement->image)}}" alt="">
+                @else
+                    <img class="img-fluid" src="{{ asset('images/advertising.png') }}" alt="">
+                @endif
             </div>
             <div class="col-9">
                 <div class="row pt-3">

@@ -10,16 +10,16 @@
                 <div class="content-chat position-relative">
                     <div id="body-chat" class="chat-body">
                         @foreach($messages as $message)
-                            @if($message->sender_id !== $claim->client_id)
+                            @if($message->sender_id !== $conversation->client_id)
                                 <div class="right-content-chat my-2">
                                     <div class="content-message p-3">
-                                        {{$message->content}}
+                                        {{$message->message}}
                                     </div>
                                 </div>
                             @else
                                 <div class="left-content-chat my-2">
                                     <div class="content-message p-3">
-                                        {{$message->content}}
+                                        {{$message->message}}
                                     </div>
                                 </div>
                             @endif
@@ -27,15 +27,15 @@
                     </div>
                     <div class="footer-chat position-absolute pe-3">
                         <hr class="m-0">
-                        <form class="bg-white" action="{{route('send_claim_message')}}" method="POST" enctype="multipart/form-data">
+                        <form class="bg-white" action="{{route('send_conversation_message')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="bg-white w-100 py-2 d-flex">
                                 <input autocomplete="off" name="message" type="text" class="bg-pick-chat rounded-pill px-3 flex-grow-1">
-                                <input type="hidden" name="claim_id" value="{{$claim->id}}">
-                                <label for="claim-file" class="bg-white">
+                                <input type="hidden" name="conversation_id" value="{{$conversation->id}}">
+                                <label for="conversation-file" class="bg-white">
                                     <img src="{{asset('images/upload_file.png')}}" alt="">
                                 </label>
-                                <input id="claim-file" type="file" name="file" class="visually-hidden">
+                                <input id="conversation-file" type="file" name="file" class="visually-hidden">
                                 <button type="submit" class="btn-icon bg-white">
                                     <img src="{{asset('images/icon_send_message.png')}}" alt="">
                                 </button>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="row justify-content-center ">
                                 <div class="col-4">
-                                    <a href="{{url('/claims')}}" class="btn btn-primary bg-blue-dark"> Cerrar </a>
+                                    <a href="{{url('/conversations')}}" class="btn btn-primary bg-blue-dark"> Cerrar </a>
                                 </div>
                             </div>
                         </form>

@@ -15,6 +15,11 @@ class Vehicle extends Model
         "marca",
         "modelo",
         "plan_pago",
-        "image"
+        "image",
+        'hour_vehicle_id'
     ];
+    public function hour_vehicle()
+    {
+        return $this->belongsTo('App\Models\IncomeVehicle','hour_vehicle_id', 'id');
+    }
 }

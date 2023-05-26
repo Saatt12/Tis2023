@@ -21,13 +21,32 @@
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
                         <div class="text-center">
-                            <div class="row">
+                            <div class="row pt-2">
+                                <div class="col-5 pb-2">
+                                   <h5 class="text-blue-dark"> Placa</h5>
+                                </div>
+                                <div class="col-3">
+                                    <h5 class="text-blue-dark">
+                                    HrE - HrS
+                                    </h5>
+                                </div>
+                                <div class="col-4 pb-2 d-flex">
+                                </div>
                                 @foreach ($vehicles as $key => $vehicle)
-                                    <div class="col-7 pb-2">
-                                        {{ $vehicle->marca }} {{ $vehicle->placa }}
-                                    </div>
                                     <div class="col-5 pb-2">
-                                        <a href="" class="btn btn-secondary bg-blue-dark"
+                                       {{ $vehicle->placa }}
+                                    </div>
+                                <div class="col-3">
+                                    {{$vehicle->hour_vehicle->hora_entrada}} - {{$vehicle->hour_vehicle->hora_salida}}
+                                </div>
+
+                                    <div class="col-4 pb-2 d-flex">
+                                        <a data-bs-toggle="modal"
+                                           data-bs-target="#vehicle_hour_{{ $vehicle->id }}"
+                                           class="btn btn-secondary bg-blue-dark">
+                                            Registro Hora
+                                        </a>
+                                        <a href="" class="btn btn-secondary bg-blue-dark ms-2"
                                            data-bs-toggle="modal"
                                            data-bs-target="#vehicle_show_{{ $vehicle->id }}"> Ver </a>
                                     </div>
@@ -116,26 +135,82 @@
                 </div>
             </div>
         @endforeach
+
+        <!-- Modal -->
+        @foreach ($vehicles as $vehicle)
+        <div class="modal fade" id="vehicle_hour_{{ $vehicle->id }}" data-bs-backdrop="static"
+             data-bs-keyboard="false" tabindex="-1" aria-labelledby="vehicle_hour_Label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content z-i-101">
+                    <div class="modal-header bg-red-cherry text-pink-light justify-content-center">
+                        <h1 class="modal-title fs-5 text-center" id="vehicle_hour_Label">Vehiculo</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('hours_vehicle.store')}}" method="POST">
+                            @csrf
+                            <div class="row justify-content-center mt-4">
+                            <div class="col-10">
+
+                                        <input id="user" type="hidden" class="form-control" readonly
+                                               value="{{ $vehicle->user_id }}" name="user_id">
+                                        <input id="vehicle" type="hidden" class="form-control" readonly
+                                               value="{{ $vehicle->id }}" name="vehicle_id">
+
+                                <div class="row mb-3">
+                                    <label for="hora_entrada" class="col-md-4 col-form-label"> Hora entrada</label>
+
+                                    <div class="col-md-6">
+                                        <input id="hora_entrada" type="time"
+                                               class="form-control @error('hora_entrada') is-invalid @enderror" name="hora_entrada"
+                                               value="" required autocomplete="name" autofocus>
+
+                                        @error('hora_entrada')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="hora_salida" class="col-md-4 col-form-label"> Hora Salida</label>
+
+                                    <div class="col-md-6">
+                                        <input id="hora_salida" type="time"
+                                               class="form-control @error('hora_salida') is-invalid @enderror" name="hora_salida"
+                                               value="" required autocomplete="name" autofocus>
+
+                                        @error('hora_salida')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-5 justify-content-center">
+                                        <div class="col-4">
+                                        <a class="btn btn-primary bg-blue-dark" data-bs-dismiss="modal">
+                                            Cerrar
+                                        </a>
+                                        </div>
+                                    <div class="col-4">
+                                    <button type="submit" class="btn btn-primary bg-blue-dark">
+                                           Aceptar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
 @endsection
-@section('scripts')
+{{--@section('scripts')
     <script>
-        {{--const clients =  @json($clients);--}}
-        function selectedAll(){
-            $('input[type="checkbox"]').prop('checked', true);
-        }
-        function addDataChecks(name='selected_checks'){
-            let checked = []
-            $("input[name='users[]']:checked").each(function ()
-            {
-                checked.push(parseInt($(this).val()));
-            });
-            // const clients_selected = clients.filter(item=>checked.includes(item.id))
-            /*const email_clients = clients_selected.map(
-                item=> item.email?`<p class="text-start mb-0"> ${item.email}</p>`:''
-            )*/
-            $('#'+name).val(checked.join(','));
-            // $('#body-chat').html(email_clients.join(''));
-        }
     </script>
-@endsection
+@endsection--}}

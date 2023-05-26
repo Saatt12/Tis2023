@@ -6,7 +6,9 @@ use App\Models\Announcement;
 use App\Models\Cargo;
 use App\Models\Claim;
 use App\Models\Conversation;
+use App\Models\ConversationMessage;
 use App\Models\Horario;
+use App\Models\IncomeVehicle;
 use App\Models\Message;
 use App\Models\Parking;
 use App\Models\RequestForm;
@@ -414,7 +416,8 @@ class HomeController extends Controller
         if($request && $request->keyword){
             $keyword=$request->keyword;
             $vehicles = Vehicle::where('marca', 'ILIKE', '%' . $request->keyword . '%')
-                ->orWhere('modelo', 'ILIKE', '%' . $request->keyword . '%')->get();
+                ->orWhere('modelo', 'ILIKE', '%' . $request->keyword . '%')
+                ->orWhere('placa', 'ILIKE', '%' . $request->keyword . '%')->get();
         }else{
             $vehicles = Vehicle::all();
         }
@@ -489,9 +492,9 @@ class HomeController extends Controller
     }
     public function conversations_messages(Request $request){
         $type_list = 'conversations';
-        $title='Messages';
-        $messages = Message::where('conversation_id',$request->conversation_id)->get();
-        $conversation = Claim::where('id',$request->conversation_id)->first();
+        $title='Mensajes';
+        $messages = ConversationMessage::where('conversation_id',$request->conversation_id)->get();
+        $conversation = Conversation::where('id',$request->conversation_id)->first();
         return view('pages.conversations.message')->with([
             'type_list' =>$type_list,
             'title'=>$title,
@@ -506,60 +509,80 @@ class HomeController extends Controller
         $message_file = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-
             // Perform operations on the file, such as storing it, manipulating it, etc.
-
             //return "File uploaded successfully.";
         }
         if($message){
-            $conversation = Claim::where('id',$conversation_id)->first();
+            $conversation = Conversation::where('id',$conversation_id)->first();
             if($conversation){
                 $data_sms = [
-                    'content'=> $message,
+                    'message'=> $message,
                     'type'=>'text',
                     'sender_id'=>$user->id,
+                    'receiver_id'=>$conversation->receiver_id===$user->id?$conversation->sender_id:$conversation->receiver_id,
                     'conversation_id'=>$conversation_id
                 ];
-                Message::create($data_sms);
+                ConversationMessage::create($data_sms);
             }
         }
         return redirect('/conversations_messages/'.$conversation_id);
     }
-    /*public function messages_emails(){
-        $type_list = 'claims';
-        $title='Messages';
-        $clients = User::where('rol_id', $this->role_client)->get();
-        return view('pages.claims.correos')->with([
+    public function conversation_emails(){
+        $type_list = 'conversations';
+        $title='Mensaje';
+        $user = Auth::user();
+        $users = User::where('id','!=' ,$user->id)->where('rol_id','!=',$this->role_client)->get();
+        return view('pages.conversations.correos')->with([
             'type_list' =>$type_list,
             'title'=>$title,
-            'clients' => $clients
+            'users' => $users
         ]);
     }
-    public function messages_emails_store(Request $request){
+    public function conversation_emails_store(Request $request){
         $user = Auth::user();
         $receivers = explode(',',$request->receivers);
         if($request->message){
-            foreach ($receivers as $client_id){
-                $claim = Claim::where('client_id',$client_id)->first();
-                if(!$claim){
-                    $claim = Claim::create(['client_id'=>$client_id]);
+            foreach ($receivers as $receiver){
+                $conversation = Conversation::where('receiver_id',$receiver)->orWhere('sender_id', $receiver)->first();
+                if(!$conversation){
+                    $conversation = Conversation::create(['receiver_id'=>$receiver,'sender_id'=>$user->id]);
                 }
                 $data_sms = [
-                    'content'=> $request->message,
+                    'message'=> $request->message,
                     'type'=>'text',
                     'sender_id'=>$user->id,
-                    'claim_id'=>$claim->id
+                    'receiver_id'=>$receiver,
+                    'conversation_id'=>$conversation->id
                 ];
-                Message::create($data_sms);
+                ConversationMessage::create($data_sms);
             }
         }
-        $request->session()->flash('success', 'Se envio correctamente el mensaje los clientes seleccionados');
-        return redirect('/messages_emails');
+        $request->session()->flash('success', 'Mensaje enviado exitosamente');
+        return redirect('/conversation_emails');
     }
-    public function messages_emails_remove(Request $request){
-        $claim_ids = explode(',',$request->claim_ids);
-        Message::whereIn('claim_id', $claim_ids)->delete();
-        Claim::whereIn('id', $claim_ids)->delete();
-        return redirect('/claims');
-    }*/
+    public function conversation_emails_remove(Request $request){
+        $conversation_ids = explode(',',$request->conversation_ids);
+        ConversationMessage::whereIn('conversation_id', $conversation_ids)->delete();
+        Conversation::whereIn('id', $conversation_ids)->delete();
+        return redirect('/conversations');
+    }
+    //HOURS VEHICLES
+    public function hours_vehicles_store(Request $request){
+        $validatedData = $request->validate([
+            'hora_entrada'=>['required'],
+            'hora_salida'=>['required'],
+            'vehicle_id'=>['required'],
+            'user_id'=>['required'],
+        ]);
+        $requestData = $request->all();
+        $income_vehicle = IncomeVehicle::where('vehicle_id',$request->vehicle_id)->whereDate('created_at', '=', Carbon::now()->format('Y-m-d'))->first();
+        if(!$income_vehicle){
+            $income_vehicle = IncomeVehicle::create($requestData);
+            $income_vehicle = IncomeVehicle::findOrFail($income_vehicle->id);
+        }
+        $income_vehicle->update($requestData);
+        Vehicle::where('id',$request->vehicle_id)->update(['hour_vehicle_id'=>$income_vehicle->id]);
+        $keyword = $request->input('keyword');
+        return redirect()->route('parking.vehicles',['keyword' => $keyword]);
+    }
 }

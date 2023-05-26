@@ -15,6 +15,7 @@ class Payment extends Model
         "amount",
         "count",
         "is_active",
-        "user_id"
+        "user_id",
+        "comprobante"
     ];
 }

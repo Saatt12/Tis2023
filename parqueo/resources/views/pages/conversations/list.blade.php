@@ -15,7 +15,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <a href="{{url('/messages_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
+    <a href="{{url('/conversation_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
     <table class="table table-striped table-blue-light">
         <thead>
         <tr>
@@ -42,9 +42,9 @@
         <tbody>
         @foreach($conversations as $conversation)
             <tr>
-                <td>{{$conversation->user->name}}</td>
-                <td>{{$conversation->user->ci}}</td>
-                <td>{{$conversation->user->email}}</td>
+                <td>{{$conversation->receiver_id!==auth()->user()->id?$conversation->receiver->name:$conversation->sender->name}}</td>
+                <td>{{$conversation->receiver_id!==auth()->user()->id?$conversation->receiver->ci:$conversation->sender->ci}}</td>
+                <td>{{$conversation->receiver_id!==auth()->user()->id?$conversation->receiver->email:$conversation->sender->email}}</td>
                 <td>
                     <div class="row justify-content-center">
                         <div class="col-3">
@@ -64,7 +64,7 @@
     </table>
     <x-generic-modal name="reject-modal" title="Confirmar">
         <x-slot name="content" class="">
-            <form action="{{ route('messages_emails.delete') }}" method="POST">
+            <form action="{{ route('conversation_emails.delete') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <p>

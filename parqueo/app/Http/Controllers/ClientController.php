@@ -145,6 +145,12 @@ class ClientController extends Controller
     public function payment_store(Request $request){
         $requestData = $request->all();
         $requestData["user_id"] = Auth::id();
+        $comprobante = $request->file('comprobante');
+        if ($comprobante) {
+            $filename = time() . '.' . $comprobante->getClientOriginalExtension();
+            $comprobante->storeAs('public/comprobante', $filename);
+            $requestData['comprobante'] = 'comprobante/'.$filename;
+        }
         $payment = Payment::create($requestData);
         return response()->json($payment);
     }

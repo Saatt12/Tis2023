@@ -12,18 +12,18 @@
                 <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Correos</div>
                 <div class="card">
                     <div class="card-body">
-                        {{--<form class="ps-3" method="POST" action="{{ route('messages_emails.store') }}">
+                        {{--<form class="ps-3" method="POST" action="{{ route('conversation_emails.store') }}">
                             @csrf
                             @method('PUT')--}}
                         <div class="ps-3 border-0">
                             <button type="button" onclick="selectedAll()" class="btn btn-primary bg-grey-light border-0 text-black"> Seleccionar todos</button>
-                            @foreach($clients as $client)
+                            @foreach($users as $user)
                             <div class="row py-1">
                                 <div class="col-10">
-                                    <label for="check_{{$client->id}}" class="text-wrap">{{$client->email}}</label>
+                                    <label for="check_{{$user->id}}" class="text-wrap">{{$user->email}}</label>
                                 </div>
                                 <div class="col-2">
-                                    <input id="check_{{$client->id}}" type="checkbox" name="users[]" value="{{$client->id}}" class="form-check-input bg-grey-light checkbox-email">
+                                    <input id="check_{{$user->id}}" type="checkbox" name="users[]" value="{{$user->id}}" class="form-check-input bg-grey-light checkbox-email">
                                 </div>
                             </div>
                             @endforeach
@@ -32,7 +32,7 @@
 
 
                                 <div class="col-md-4 ">
-                                    <a class="btn btn-primary bg-blue-dark" href="{{ url('/claims') }}">
+                                    <a class="btn btn-primary bg-blue-dark" href="{{ url('/conversations') }}">
                                         Cancelar
                                     </a>
                                 </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="footer-chat position-absolute pe-3">
                         <hr class="m-0">
-                        <form class="bg-white" action="{{route('messages_emails.store')}}" method="POST" enctype="multipart/form-data">
+                        <form class="bg-white" action="{{route('conversation_emails.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="bg-white w-100 py-2 d-flex">
                                 <input autocomplete="off" name="message" type="text" class="bg-pick-chat rounded-pill px-3 flex-grow-1">
@@ -86,7 +86,7 @@
 @endsection
 @section('scripts')
     <script>
-        const clients =  @json($clients);
+        const users =  @json($users);
         function selectedAll(){
             $('input[type="checkbox"]').prop('checked', true);
         }
@@ -96,12 +96,12 @@
             {
                 checked.push(parseInt($(this).val()));
             });
-            const clients_selected = clients.filter(item=>checked.includes(item.id))
-            const email_clients = clients_selected.map(
+            const users_selected = users.filter(item=>checked.includes(item.id))
+            const email_users = users_selected.map(
                 item=> item.email?`<p class="text-start mb-0"> ${item.email}</p>`:''
             )
             $('#'+name).val(checked.join(','));
-            $('#body-chat').html(email_clients.join(''));
+            $('#body-chat').html(email_users.join(''));
         }
     </script>
 @endsection

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class IncomeVehicle extends Model
 {
     use HasFactory;
+    protected $fillable =[
+        'hora_entrada',
+        'hora_salida',
+        'vehicle_id',
+        'user_id',
+    ];
 }

@@ -231,6 +231,13 @@
                                         value="{{ $payment->amount }}" disabled>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <label for="amount" class="col-md-4 col-form-label">Documento Adjunto</label>
+
+                                <div class="col-md-6">
+                                    <a href="{{asset('storage/'.@$payment->comprobante)}}"></a>
+                                </div>
+                            </div>
                             @if (@$payment->count)
                                 <div class="row mb-3 ">
                                     <label for="count" class="col-md-4 col-form-label">Meses</label>
@@ -277,7 +284,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="text-center">
-                                    <form id="payment-form" method="POST" action="{{ route('payment.store') }}">
+                                    <form id="payment-form" method="POST" action="{{ route('payment.store') }}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row mb-3">
                                             <label for="type" class="col-md-4 col-form-label">Modalidad de
@@ -322,14 +329,14 @@
 
                                                 <div class="col-md-6">
                                                     <input id="amount" type="number" class="form-control"
-                                                        name="amount" value="" required>
+                                                        name="amount" value="" required readonly>
                                                 </div>
                                             </div>
                                             <div id="content-input-month" class="dis-none">
                                                 <div class="row mb-3 ">
                                                     <label for="count" class="col-md-4 col-form-label">Meses</label>
                                                     <div class="col-md-6">
-                                                        <select id="count" class="form-control" name="count"
+                                                        <select onchange="selectedMonth(event)" id="count" class="form-control" name="count"
                                                             required autofocus>
                                                             <option value="" selected> Selecciona un meses</option>
                                                             @for ($i = 1; $i <= 12; $i++)
@@ -346,6 +353,13 @@
                                                 <div class="col-md-6">
                                                     <input id="user" type="text" class="form-control" readonly
                                                         value="{{ auth()->user()->name }}">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 content-qr">
+                                                <label for="comprobante" class="col-md-4 col-form-label">Adjuntar Comprobante</label>
+
+                                                <div class="col-md-6">
+                                                    <input id="comprobante" accept="application/pdf,image/*" type="file" class="form-control" name="comprobante">
                                                 </div>
                                             </div>
                                         </div>
@@ -417,13 +431,19 @@
                     </x-slot>
                     <x-slot name="buttons" class=""></x-slot>
                 </x-generic-modal>
-
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
     <script>
+        const announcement =  {!! json_encode(@$announcement) !!}
+       {{-- const multa =  {!! json_encode($announcement->multa) !!}
+        const monto_mes =  {!! json_encode($announcement->monto_mes) !!}
+        const monto_multa =  {!! json_encode($announcement->monto_multa) !!}
+        const monto_descuento =  {!! json_encode($announcement->monto_descuento) !!}
+        const monto_anual =  {!! json_encode($announcement->monto_anual) !!}
+        const cantidad_espacios =  {!! json_encode($announcement->cantidad_espacios) !!}--}}
         new QRCode(document.getElementById("qrcode"), {
             text: "http://jindo.dev.naver.com/collie",
             width: 150,
@@ -436,8 +456,10 @@
                 $('#content-form-data-pay').show()
                 if (selected === 'qr') {
                     $('#content-qr').show()
+                    $('.content-qr').show()
                 } else {
                     $('#content-qr').hide()
+                    $('.content-qr').hide()
                 }
             } else {
                 $('#content-form-data-pay').hide()
@@ -445,13 +467,24 @@
 
 
         }
+        function selectedMonth(e){
+            const selected = e.target.value
+            if(announcement){
+                $('#amount').val(announcement.monto_mes*selected)
+            }
 
+        }
         function selectedPlan(e) {
             const selected = e.target.value
             if (selected === 'mensual') {
+                $('#amount').val('')
                 $('#content-input-month').show()
             } else {
+                $('#amount').val('')
                 $('#content-input-month').hide()
+            }
+            if (selected === 'anual'){
+                $('#amount').val(announcement.monto_anual)
             }
         }
         $("#payment-form").validate({
@@ -462,21 +495,28 @@
                 type: "campo modalidad de pago es requerido",
             },
             submitHandler: function(form) {
+                //console.log("-> $(form).serialize()", $(form).serialize());
+                let formData = new FormData(form);
+                // console.log("-> formData", formData);
                 let token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: 'POST',
                     url: $(form).attr('action'),
-                    data: $(form).serialize(),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
                     headers: {
                         'X-CSRF-TOKEN': token
                     },
                     success: function(response) {
+                        console.log("-> response", response);
                         $('#payment_mode_').modal('hide')
                         $('#success_payment_modal_').modal('show')
                         location.reload()
                     },
                     error: function(xhr, status, error) {
-                        // handle form submission error
+                        console.log("-> error", error);
                     }
                 });
             }

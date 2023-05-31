@@ -235,7 +235,7 @@
                                 <label for="amount" class="col-md-4 col-form-label">Documento Adjunto</label>
 
                                 <div class="col-md-6">
-                                    <a href="{{asset('storage/'.@$payment->comprobante)}}"></a>
+                                    <a href="{{asset('storage/'.@$payment->comprobante)}}" target="_blank">{{@$payment->comprobante}}</a>
                                 </div>
                             </div>
                             @if (@$payment->count)

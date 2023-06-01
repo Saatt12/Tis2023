@@ -81,6 +81,9 @@ Route::get('/reports', [App\Http\Controllers\HomeController::class, 'reports'])-
 Route::get('/reports/users', [App\Http\Controllers\HomeController::class, 'reports_users'])->name('reports_users');
 Route::get('/reports/payments', [App\Http\Controllers\HomeController::class, 'reports_payments'])->name('reports_payments');
 Route::get('/reports/announcement', [App\Http\Controllers\HomeController::class, 'reports_announcement'])->name('reports_announcement');
+Route::post('/reports/users', [App\Http\Controllers\HomeController::class, 'export_reports_users'])->name('export_report_users');
+Route::post('/reports/payments', [App\Http\Controllers\HomeController::class, 'export_reports_payments'])->name('export_report_payments');
+Route::post('/reports/announcement', [App\Http\Controllers\HomeController::class, 'export_reports_announcement'])->name('export_report_announcement');
 
 //Conversation
 Route::get('/conversations', [App\Http\Controllers\HomeController::class, 'list_conversations'])->name('conversations');

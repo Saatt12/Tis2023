@@ -585,4 +585,52 @@ class HomeController extends Controller
         $keyword = $request->input('keyword');
         return redirect()->route('parking.vehicles',['keyword' => $keyword]);
     }
+    //REPORTS
+    public function reports(){
+        $type_list = 'reports';
+        $title='Reporte';
+        return view('pages.reports.reports')->with([
+            'type_list' =>$type_list,
+            'title'=>$title,
+        ]);
+    }
+    public function reports_users(){
+        $users = User::where('rol_id',$this->role_client)->get();
+        $type_list = 'reports';
+        $title='Reportes Usuarios';
+        $announcements = Announcement::all();
+        return view('pages.reports.reports_users')->with([
+            'users'=>$users,
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'announcements'=>$announcements
+        ]);
+    }
+    public function reports_payments(){
+        $users = User::where('rol_id',$this->role_client)->get();
+        $type_list = 'reports';
+        $title='Reportes Usuarios';
+        $announcements = Announcement::all();
+        return view('pages.reports.reports_payments')->with([
+            'users'=>$users,
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'announcements'=>$announcements
+        ]);
+    }
+    public function reports_announcement(){
+        $users = User::where('rol_id',$this->role_client)->get();
+        $type_list = 'reports';
+        $title='Reportes Usuarios';
+        $announcements = Announcement::all();
+        return view('pages.reports.reports_announcement')->with([
+            'users'=>$users,
+            'type_list' =>$type_list,
+            'title'=>$title,
+            'announcements'=>$announcements
+        ]);
+    }
+    public function export_reports_users(Request $request){}
+    public function export_reports_payments(Request $request){}
+    public function export_reports_announcement(Request $request){}
 }

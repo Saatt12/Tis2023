@@ -97,8 +97,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <table  class="cuerpo" align="left" cellpadding="0" cellspacing="0" width="100%" style="margin:5px;  page-break-inside: avoid;width:100%; border-left: 1px dotted rgb(0,0,0); border-top: 1px dotted rgb(0,0,0);border-bottom: 1px dotted rgb(0,0,0);border-right: 1px dotted rgb(0,0,0)" >
                 <thead class="table-info">
                 <tr>
-                    <th colspan="5" >
-                        <h3 class="h2" style="text-align:center; margin-top: 0%; padding-top: 0%; border: 1px solid rgb(0,0,0); color: rgb(10, 1, 59);">Usuarios</h3>
+                    <th colspan="2" >
+                        <h3 class="h2" style="text-align:center; margin-top: 0%; padding-top: 0%; border: 1px solid rgb(0,0,0); color: rgb(10, 1, 59);">Pagos</h3>
                     </th>
                 </tr>
 
@@ -108,23 +108,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tr>
 
                     <th>Nombre</th>
-                    <th>CI</th>
-                    <th>Email</th>
-                    <th>Rol</th>
+                    <th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($data as  $key => $item)
                     <tr>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->ci}}</td>
-                        <td>{{$item->email}}</td>
-                        <td>{{$item->rol->nom_role}}</td>
-                        {{--<td>{{ date('d-m-Y', strtotime($item['fecha'])) }}</td>
-                        <td>{{ $item['detalle'] }}</td>
-                        <td> {{ $item['gasto_name'] }}</td>
-                        <td>000{{ $item['num_recibo'] }}</td>
-                        <td style="text-align: right;">{{ number_format($item['monto'], 2, '.', '') }}</td>--}}
+                        <td>{{$item->user->name}}</td>
+                        <td>{{@$item->status?$item->status:'Pendiente'}}</td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -11,6 +11,7 @@ use App\Models\Horario;
 use App\Models\IncomeVehicle;
 use App\Models\Message;
 use App\Models\Parking;
+use App\Models\Payment;
 use App\Models\RequestForm;
 use App\Models\Rol;
 use App\Models\Unidad;
@@ -20,6 +21,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PDF;
 
 class HomeController extends Controller
@@ -594,43 +597,233 @@ class HomeController extends Controller
             'title'=>$title,
         ]);
     }
-    public function reports_users(){
-        $users = User::where('rol_id',$this->role_client)->get();
+    public function reports_users(Request $request){
+        $users = User::where('rol_id','!=',1);
         $type_list = 'reports';
         $title='Reportes Usuarios';
         $announcements = Announcement::all();
+        $announcement_id='';
+        $date_initial='';
+        $date_fin='';
+        $name='';
+        if($request && @$request->announcement_id){
+            $users_request = RequestForm::where('announcement_id',$request->announcement_id)->pluck('user_id');
+           $users = $users->whereIn('id',$users_request);
+            $announcement_id = $request->announcement_id;
+        }
+        if($request && @$request->date_initial){
+            $users = $users->whereDate('created_at', '>=', $request->date_initial);
+            $date_initial = $request->date_initial;
+        }
+        if($request && @$request->date_fin){
+            $users = $users->whereDate('created_at', '<=', $request->date_fin);
+            $date_fin =$request->date_fin;
+        }
+        if($request && @$request->name){
+            $users = $users->where('name', 'ILIKE', '%' . $request->name . '%');
+            $name =$request->name;
+        }
+        $users = $users->get();
         return view('pages.reports.reports_users')->with([
             'users'=>$users,
             'type_list' =>$type_list,
             'title'=>$title,
-            'announcements'=>$announcements
+            'announcements'=>$announcements,
+            'announcement_id' =>$announcement_id,
+            'date_initial' =>$date_initial,
+            'date_fin' =>$date_fin,
+            'name' =>$name,
         ]);
     }
-    public function reports_payments(){
-        $users = User::where('rol_id',$this->role_client)->get();
+    public function reports_payments(Request $request){
         $type_list = 'reports';
-        $title='Reportes Usuarios';
-        $announcements = Announcement::all();
-        return view('pages.reports.reports_payments')->with([
-            'users'=>$users,
-            'type_list' =>$type_list,
-            'title'=>$title,
-            'announcements'=>$announcements
-        ]);
+        $title='Reportes Pagos';
+        $search = $request->all();
+        $date_initial='';
+        $date_fin='';
+        $name='';
+        if(sizeof($search)){
+            $payments = Payment::where('id','!=',null);
+            if($request && @$request->date_initial){
+                $payments = $payments->whereDate('created_at', '>=', $request->date_initial);
+                $date_initial = $request->date_initial;
+            }
+            if($request && @$request->date_fin){
+                $payments = $payments->whereDate('created_at', '<=', $request->date_fin);
+                $date_fin =$request->date_fin;
+            }
+            if($request && @$request->name){
+                $user_ids = User::where('name', 'ILIKE', '%' . $request->name . '%')->pluck('id');
+                $payments = $payments->whereIn('user_id',$user_ids);
+                $name =$request->name;
+            }
+            $payments = $payments->get();
+            return view('pages.reports.reports_payments')->with([
+                'payments'=>$payments,
+                'type_list' =>$type_list,
+                'title'=>$title,
+                'date_initial' =>$date_initial,
+                'date_fin' =>$date_fin,
+                'name' =>$name,
+            ]);
+        }else{
+            $payments_all = Payment::all();
+            return view('pages.reports.reports_payments')->with([
+                'payments'=>$payments_all,
+                'type_list' =>$type_list,
+                'title'=>$title,
+                'date_initial' =>$date_initial,
+                'date_fin' =>$date_fin,
+                'name' =>$name,
+            ]);
+        }
+
     }
-    public function reports_announcement(){
-        $users = User::where('rol_id',$this->role_client)->get();
+    public function reports_announcement(Request $request){
         $type_list = 'reports';
-        $title='Reportes Usuarios';
-        $announcements = Announcement::all();
+        $title='Reportes Convocatorias';
+        $date_initial='';
+        $date_fin='';
+        $announcements = Announcement::where('id','!=',null);
+        if($request && @$request->date_initial){
+            $announcements = $announcements->whereDate('created_at', '>=', $request->date_initial);
+            $date_initial = $request->date_initial;
+        }
+        if($request && @$request->date_fin){
+            $announcements = $announcements->whereDate('created_at', '<=', $request->date_fin);
+            $date_fin =$request->date_fin;
+        }
+        $announcements = $announcements->get();
         return view('pages.reports.reports_announcement')->with([
-            'users'=>$users,
             'type_list' =>$type_list,
             'title'=>$title,
-            'announcements'=>$announcements
+            'announcements'=>$announcements,
+            'date_initial' =>$date_initial,
+            'date_fin' =>$date_fin,
         ]);
     }
-    public function export_reports_users(Request $request){}
-    public function export_reports_payments(Request $request){}
-    public function export_reports_announcement(Request $request){}
+    public function export_reports_users(Request $request){
+        $users = User::where('rol_id','!=',1);
+        $type_list = 'reports';
+        $title='Reportes Usuarios';
+        $announcements = Announcement::all();
+
+        $announcement_id='';
+        $date_initial='';
+        $date_fin='';
+        $name='';
+        if($request && @$request->announcement_id){
+            $users_request = RequestForm::where('announcement_id',$request->announcement_id)->pluck('user_id');
+            $users = $users->whereIn('id',$users_request);
+            $announcement_id = $request->announcement_id;
+        }
+        if($request && @$request->date_initial){
+            $users = $users->whereDate('created_at', '>=', $request->date_initial);
+            $date_initial = $request->date_initial;
+        }
+        if($request && @$request->date_fin){
+            $users = $users->whereDate('created_at', '>=', $request->date_fin);
+            $date_fin =$request->date_fin;
+        }
+        if($request && @$request->name){
+            $users = $users->where('name', 'ILIKE', '%' . $request->name . '%');
+            $name =$request->name;
+        }
+
+            $data = $users->get();
+            $view= view('pages.template_export.pdf_generic')->with([
+                'data'=>$data,
+            ]);;
+            $options = new Options();
+            $options->set('isRemoteEnabled',true);
+            $dompdf = new Dompdf( $options );
+            $dompdf->loadHtml($view);
+            $dompdf->setPaper('A4', 'landscape');  // (Optional) Setup the paper size and orientation
+            $dompdf->render();
+            return $dompdf -> stream ('Users'.'.pdf', ['Attachment' => false] );
+            exit(0);
+    }
+    public function export_reports_payments(Request $request){
+        $payments = Payment::where('id','!=',null);
+        $type_list = 'reports';
+        $title='Reportes Pagos';
+        if($request && @$request->date_initial){
+            $payments = $payments->whereDate('created_at', '>=', $request->date_initial);
+            $date_initial = $request->date_initial;
+        }
+        if($request && @$request->date_fin){
+            $payments = $payments->whereDate('created_at', '<=', $request->date_fin);
+            $date_fin =$request->date_fin;
+        }
+        if($request && @$request->name){
+            $user_ids = User::where('name', 'ILIKE', '%' . $request->name . '%')->pluck('id');
+            $payments = $payments->whereIn('user_id',$user_ids);
+            $name =$request->name;
+        }
+         $data = $payments->get();
+        $view= view('pages.template_export.pdf_payments')->with([
+            'data'=>$data,
+        ]);;
+        $options = new Options();
+        $options->set('isRemoteEnabled',true);
+        $dompdf = new Dompdf( $options );
+        $dompdf->loadHtml($view);
+        $dompdf->setPaper('A4', 'landscape');  // (Optional) Setup the paper size and orientation
+        $dompdf->render();
+        return $dompdf -> stream ('Users'.'.pdf', ['Attachment' => false] );
+        exit(0);
+    }
+    public static function getImage(string $url)
+    {
+        $path = base_path($url);
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        return $base64;
+    }
+    public function export_reports_announcement(Request $request){
+        $users = User::where('rol_id','!=',1);
+        $type_list = 'reports';
+        $title='Reportes Usuarios';
+        $announcements = Announcement::where('id','!=',null);
+        if($request && @$request->date_initial){
+            $announcements = $announcements->whereDate('created_at', '>=', $request->date_initial);
+            $date_initial = $request->date_initial;
+        }
+        if($request && @$request->date_fin){
+            $announcements = $announcements->whereDate('created_at', '<=', $request->date_fin);
+            $date_fin =$request->date_fin;
+        }
+        $list=$announcements->get();
+        foreach ($list as $item){
+            $item->image =self::getImage('public/storage/'.$item->image);
+        }
+        $data = $list;
+        $view= view('pages.template_export.pdf_announcements')->with([
+            'data'=>$data,
+        ]);;
+        $options = new Options();
+        $options->set('isRemoteEnabled',true);
+        $dompdf = new Dompdf( $options );
+        $dompdf->loadHtml($view);
+        $dompdf->setPaper('A4', 'landscape');  // (Optional) Setup the paper size and orientation
+        $dompdf->render();
+        return $dompdf -> stream ('Users'.'.pdf', ['Attachment' => false] );
+        exit(0);
+    }
+
+    public function search_reports_users(Request $request){
+        $search = $request->except('_token');
+        return redirect()->route('reports_users',$search);
+
+    }
+    public function search_reports_payments(Request $request){
+        $search = $request->except('_token');
+        return redirect()->route('reports_payments',$search);
+    }
+    public function search_reports_announcement(Request $request){
+        $search = $request->except('_token');
+        return redirect()->route('reports_announcement',$search);
+    }
 }

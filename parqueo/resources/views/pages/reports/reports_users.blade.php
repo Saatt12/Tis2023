@@ -8,14 +8,14 @@
             </a>
         </div>
         <div class="col-10">
-        <form class="row my-3" action="{{route('hours_vehicle.store')}}" method="POST">
+        <form class="row my-3" action="{{route('search_report_users')}}" method="POST">
             @csrf
                <div class="col-2 d-flex flex-column align-items-center justify-content-center">
-                   <select id="unidad" class="form-control @error('unidad_id') is-invalid @enderror"
-                           name="unidad_id" required autofocus>
-                       <option value="" selected> Convocatoria</option>
+                   <select id="announcement" class="form-control @error('announcement_id') is-invalid @enderror"
+                           name="announcement_id" autofocus>
+                       <option value="" {{ !@$announcement_id ? 'selected' : '' }}> Convocatoria</option>
                        @foreach ($announcements as $announcement)
-                           <option value="{{ $announcement->fecha_inicio }}">{{ $announcement->fecha_fin }}</option>
+                           <option value="{{$announcement->id}}" {{$announcement->id === @$announcement_id ? 'selected' : '' }}>{{ $announcement->fecha_inicio }} - {{ $announcement->fecha_fin }}</option>
                        @endforeach
                    </select>
                </div>
@@ -24,8 +24,8 @@
                    <label for="date_initial" class="col-6 col-form-label">fecha inicial de registro</label>
                    <div class="col-6">
                        <input id="date_initial" type="date"
-                              class="form-control @error('hora_entrada') is-invalid @enderror" name="hora_entrada"
-                              value="" required autocomplete="name" autofocus>
+                              class="form-control @error('date_initial') is-invalid @enderror" name="date_initial"
+                              value="{{$date_initial}}" autocomplete="name" autofocus>
                        @error('date_initial')
                        <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
@@ -39,12 +39,12 @@
                    <div class="col-6">
                        <input id="date_fin" type="date"
                               class="form-control @error('date_fin') is-invalid @enderror" name="date_fin"
-                              value="" required autocomplete="name" autofocus>
+                              value="{{$date_fin}}" autocomplete="name" autofocus>
 
                        @error('date_fin')
                         <span class="invalid-feedback" role="alert">
-                                       <strong>{{ $message }}</strong>
-                                   </span>
+                              <strong>{{ $message }}</strong>
+                        </span>
                        @enderror
                    </div>
                </div>
@@ -52,17 +52,17 @@
                <div class="col-4 d-flex flex-column align-items-center justify-content-center">
                    <div class="row">
                        <div class="col-3 d-flex flex-column align-items-center justify-content-center">
-                            <label for="email" class="">Usuario</label>
+                            <label for="name" class="">Usuario</label>
                        </div>
                        <div class="col-9">
-                       <input id="placa" type="text"
-                              class="form-control @error('placa') is-invalid @enderror" name="placa"
-                              value="" required autocomplete="name" autofocus>
+                       <input id="name" type="text"
+                              class="form-control @error('name') is-invalid @enderror" name="name"
+                              value="{{$name}}" autocomplete="name" autofocus>
 
-                       @error('placa')
+                       @error('name')
                        <span class="invalid-feedback" role="alert">
-                                       <strong>{{ $message }}</strong>
-                                   </span>
+                              <strong>{{ $message }}</strong>
+                       </span>
                        @enderror
                        </div>
                    </div>
@@ -79,7 +79,14 @@
         </form>
         </div>
         <div class="col-1 d-flex flex-column align-items-center justify-content-center">
-            <a href="{{route('horario.create')}}" class="btn btn-primary bg-blue-dark"> PDF</a>
+            <form method="POST" action="{{ route('export_report_users') }}" target="_blank">
+                @csrf
+                <input id="date_initial" type="hidden" value="{{$announcement_id}}" name="announcement_id">
+                <input id="date_initial" type="hidden" value="{{$date_initial}}" name="date_initial">
+                <input id="date_initial" type="hidden" value="{{$date_fin}}" name="date_fin">
+                <input id="date_initial" type="hidden" value="{{$name}}" name="name">
+                <button type="submit" class="btn btn-primary bg-blue-dark"> PDF</button>
+            </form>
         </div>
     </div>
     <table class="table table-striped table-blue-light">

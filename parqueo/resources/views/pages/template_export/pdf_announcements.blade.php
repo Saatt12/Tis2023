@@ -97,8 +97,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <table  class="cuerpo" align="left" cellpadding="0" cellspacing="0" width="100%" style="margin:5px;  page-break-inside: avoid;width:100%; border-left: 1px dotted rgb(0,0,0); border-top: 1px dotted rgb(0,0,0);border-bottom: 1px dotted rgb(0,0,0);border-right: 1px dotted rgb(0,0,0)" >
                 <thead class="table-info">
                 <tr>
-                    <th colspan="5" >
-                        <h3 class="h2" style="text-align:center; margin-top: 0%; padding-top: 0%; border: 1px solid rgb(0,0,0); color: rgb(10, 1, 59);">Usuarios</h3>
+                    <th colspan="8" >
+                        <h3 class="h2" style="text-align:center; margin-top: 0%; padding-top: 0%; border: 1px solid rgb(0,0,0); color: rgb(10, 1, 59);">Convocatorias</h3>
                     </th>
                 </tr>
 
@@ -107,24 +107,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </tr>
                 <tr>
 
-                    <th>Nombre</th>
-                    <th>CI</th>
-                    <th>Email</th>
-                    <th>Rol</th>
+                    <th>fecha emision</th>
+                    <th>fecha fin emision</th>
+                    <th>Descuento</th>
+                    <th>Multa</th>
+                    <th>Monto mensual </th>
+                    <th>Monto anual</th>
+                    <th>Cantidad Esp</th>
+                    <th>Imagen</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($data as  $key => $item)
                     <tr>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->ci}}</td>
-                        <td>{{$item->email}}</td>
-                        <td>{{$item->rol->nom_role}}</td>
-                        {{--<td>{{ date('d-m-Y', strtotime($item['fecha'])) }}</td>
-                        <td>{{ $item['detalle'] }}</td>
-                        <td> {{ $item['gasto_name'] }}</td>
-                        <td>000{{ $item['num_recibo'] }}</td>
-                        <td style="text-align: right;">{{ number_format($item['monto'], 2, '.', '') }}</td>--}}
+                        <td >{{$item->fecha_inicio }}</td>
+                        <td >{{$item->fecha_fin }}</td>
+                        <td >{{$item->descuento }}</td>
+                        <td >{{$item->multa }}</td>
+                        <td >{{$item->monto_mes }} </td>
+                        <td >{{$item->monto_anual }}</td>
+                        <td >{{$item->cantidad_espacios }}</td>
+                        <td >
+                            <img src="{{$item->image}}" alt=""  style="max-width: 100px">
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

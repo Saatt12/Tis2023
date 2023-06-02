@@ -11,12 +11,12 @@ class ParkingFactory extends Factory
      *
      * @return array
      */
+    private static $order = 1;
     public function definition()
     {
         return [
-            'name' => 'espacio '.$this->faker->postcode(),
+            'name' => 'espacio '.(self::$order++),
             'status' => 'available',
-
         ];
     }
 }

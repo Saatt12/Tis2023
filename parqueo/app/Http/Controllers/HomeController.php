@@ -582,8 +582,9 @@ class HomeController extends Controller
         if(!$income_vehicle){
             $income_vehicle = IncomeVehicle::create($requestData);
             $income_vehicle = IncomeVehicle::findOrFail($income_vehicle->id);
+        }else{
+            $income_vehicle->update($requestData);
         }
-        $income_vehicle->update($requestData);
         Vehicle::where('id',$request->vehicle_id)->update(['hour_vehicle_id'=>$income_vehicle->id]);
         $keyword = $request->input('keyword');
         return redirect()->route('parking.vehicles',['keyword' => $keyword]);

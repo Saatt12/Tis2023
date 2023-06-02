@@ -120,3 +120,18 @@ Route::prefix('client')->group(function () {
     Route::post('/vehicle', [App\Http\Controllers\ClientController::class, 'vehicle_create'])->name('vehicle.create');
     Route::get('/vehicles', [App\Http\Controllers\ClientController::class, 'vehicle_create'])->name('vehicles');*/
 });
+
+Route::get('/linkstorage', function () {
+    \Illuminate\Support\Facades\Artisan::call('storage:link'); // this will do the command line job
+    echo "test";
+});
+Route::get('/create-symlink1', function() {
+    app('files')->link(storage_path('app/public'), public_path('storage'));
+    echo "test";
+});
+Route::get('/link', function () {
+    $target = '/home/public_html/storage/app/public';
+    $shortcut = '/home/public_html/public/storage';
+    symlink($target, $shortcut);
+    echo "test";
+});

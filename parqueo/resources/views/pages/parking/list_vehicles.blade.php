@@ -33,33 +33,32 @@
                                 </div>
                                 <div class="col-4 pb-2 d-flex">
                                 </div>
+                                @else
+                                    <div class="col-7 pb-2 d-flex">
+                                    </div>
                                 @endif
                                 @foreach ($vehicles as $key => $vehicle)
                                     <div class="col-5 pb-2">
                                        {{ $vehicle->placa }}
                                     </div>
                                     @if(@auth()->user()->rol->nom_role==="GUARDIA")
-                                <div class="col-3">
-                                    {{$vehicle->hour_vehicle->hora_entrada}} - {{$vehicle->hour_vehicle->hora_salida}}
-                                </div>
+                                        <div class="col-3">
+                                            {{@$vehicle->hour_vehicle->hora_entrada}} - {{@$vehicle->hour_vehicle->hora_salida}}
+                                        </div>
                                     @endif
                                     @if(@auth()->user()->rol->nom_role==="GUARDIA")
-                                    <div class="col-4 pb-2 d-flex">
-
-
-                                        <a data-bs-toggle="modal"
-                                           data-bs-target="#vehicle_hour_{{ $vehicle->id }}"
-                                           class="btn btn-secondary bg-blue-dark">
-                                            Registro Hora
-                                        </a>
-
-                                        <a href="" class="btn btn-secondary bg-blue-dark ms-2"
-                                           data-bs-toggle="modal"
-                                           data-bs-target="#vehicle_show_{{ $vehicle->id }}"> Ver </a>
-                                    </div>
+                                        <div class="col-4 pb-2 d-flex">
+                                            <a data-bs-toggle="modal"
+                                               data-bs-target="#vehicle_hour_{{ $vehicle->id }}"
+                                               class="btn btn-secondary bg-blue-dark">
+                                                Registro Hora
+                                            </a>
+                                            <a href="" class="btn btn-secondary bg-blue-dark ms-2"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#vehicle_show_{{ $vehicle->id }}"> Ver </a>
+                                        </div>
                                     @else
-                                        <div class="col-2 pb-2 d-flex">
-
+                                        <div class="col-7 pb-2 d-flex">
                                             <a href="" class="btn btn-secondary bg-blue-dark ms-2"
                                                data-bs-toggle="modal"
                                                data-bs-target="#vehicle_show_{{ $vehicle->id }}"> Ver </a>

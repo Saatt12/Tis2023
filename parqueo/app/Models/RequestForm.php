@@ -9,7 +9,7 @@ class RequestForm extends Model
 {
     use HasFactory;
     protected $table = "request_forms";
-    protected $fillable= ['user_id','parking_id'];
+    protected $fillable= ['user_id','parking_id','announcement_id'];
     public function user()
     {
         return $this->belongsTo('App\Models\User');

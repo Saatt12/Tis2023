@@ -51,6 +51,10 @@
                             <a class="@if (@$type_list === 'parking') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                                href="{{ url('/parking') }}">Parquero</a>
                         </li>
+                        <li>
+                            <a class="@if (@$type_list === 'conversations') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                               href="{{ url('/conversations') }}">Mensajes</a>
+                        </li>
                     @endif
                 </ul>
             </div>

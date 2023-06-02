@@ -34,7 +34,7 @@
                                 data-bs-target="#vehicle_registered_">Vehiculos registrados</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="" class="btn btn-primary bg-blue-dark" data-bs-toggle="modal"
+                            <a class="btn btn-primary bg-blue-dark {{@$announcement?'':'disabled'}}" data-bs-toggle="modal"
                                 data-bs-target="#modal-request">Solicitud de parqueo</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">

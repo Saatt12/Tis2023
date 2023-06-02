@@ -158,11 +158,16 @@ class ClientController extends Controller
     //REQUEST FORM
     public function request_form(Request $request){
         $user = Auth::user();
-        $request_form = RequestForm::where('user_id',$user->id)->first();
-        if(!$request_form){
-            RequestForm::create([
-                'user_id'=>$user->id
-            ]);
+        $announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
+        if(@$announcement){
+            $request_form = RequestForm::where('user_id', $user->id)->first();
+            $requests_forms_announcement = RequestForm::where('announcement_id', $announcement->id)->get();
+            if(!$request_form && $announcement->cantidad_espacios>sizeof($requests_forms_announcement)) {
+                RequestForm::create([
+                    'user_id' => $user->id,
+                    'announcement_id'=> $announcement->id
+                ]);
+            }
         }
         $request->session()->flash('success', 'Se envio la solicitud correctamente');
         return redirect('/client');

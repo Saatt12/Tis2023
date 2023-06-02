@@ -115,7 +115,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 @foreach($data as  $key => $item)
                     <tr>
                         <td>{{$item->user->name}}</td>
-                        <td>{{@$item->status?$item->status:'Pendiente'}}</td>
+                        <td>{{@$item->status?$item->status:'Pagado'}}</td>
                     </tr>
                 @endforeach
                 </tbody>

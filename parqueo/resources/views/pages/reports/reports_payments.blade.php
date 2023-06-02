@@ -91,7 +91,7 @@
         @foreach($payments as $payment)
             <tr>
                 <td>{{@$payment['user']->name}}</td>
-                <td>{{@$payment['status']?$payment['status']:'pendiente'}}</td>
+                <td>{{@$payment['status']?$payment['status']:'Pagado'}}</td>
                 <td>
                     <a onclick="selectedPayToShow({{ $payment->id }})"
                        class="btn btn-secondary bg-blue-dark" data-bs-toggle="modal"

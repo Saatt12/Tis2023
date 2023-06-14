@@ -158,6 +158,171 @@ class HomeController extends Controller
         $table->delete();
         return redirect('/horarios');
     }
+    //CARGOS----------------------------------------------------------------------------------
+    public function list_cargos()
+    {
+        $cargos = Cargo::all();
+        $type_list = 'cargos';
+        $title='Lista de Cargos';
+        return view('pages.cargos.list')->with([
+            'cargos'=>$cargos,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
+    }
+    public function cargos_create(){
+        $type_list = 'cargos';
+        $title='Crear de Cargo';
+        return view('pages.cargos.create',
+            [
+                'type_list' =>$type_list,
+                'title'=>$title
+            ]
+        );
+    }
+    public function cargos_store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nom_cargo' => 'required',
+            // Add validation rules for other fields here
+        ]);
+        Cargo::create($validatedData);
+        return redirect()->route('cargo');
+    }
+    public function cargo_show($id)
+    {
+        $cargo = Cargo::find($id);
+        $type_list = 'cargos';
+        $title='Editar de Cargo';
+        return view('pages.cargos.show', [
+            'cargo' => $cargo,
+            'type_list' =>$type_list,
+            'title'=>$title,
+        ]);
+    }
+    public function cargo_update(Request $request, $id)
+    {
+        $cargo = Cargo::findOrFail($id);
+        $requestData = $request->all();
+        $cargo->update($requestData);
+        return redirect('/cargos');
+    }
+    public function cargo_destroy($id)
+    {
+        $table = Cargo::findOrFail($id);
+        $table->delete();
+        return redirect('/cargos');
+    }
+    //ROLES----------------------------------------------------------------------------------
+    public function list_roles()
+    {
+        $roles = Rol::where('id','!=',1)->get();
+        $type_list = 'roles';
+        $title='Lista de Roles';
+        return view('pages.roles.list')->with([
+            'roles'=>$roles,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
+    }
+    public function roles_create(){
+        $type_list = 'roles';
+        $title='Crear de Rol';
+        return view('pages.roles.create',
+            [
+                'type_list' =>$type_list,
+                'title'=>$title
+            ]
+        );
+    }
+    public function roles_store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nom_role' => 'required',
+            // Add validation rules for other fields here
+        ]);
+        Rol::create($validatedData);
+        return redirect()->route('role');
+    }
+    public function role_show($id)
+    {
+        $role = Rol::find($id);
+        $type_list = 'roles';
+        $title='Editar de Rol';
+        return view('pages.roles.show', [
+            'role' => $role,
+            'type_list' =>$type_list,
+            'title'=>$title,
+        ]);
+    }
+    public function role_update(Request $request, $id)
+    {
+        $role = Rol::findOrFail($id);
+        $requestData = $request->all();
+        $role->update($requestData);
+        return redirect('/roles');
+    }
+    public function role_destroy($id)
+    {
+        $table = Rol::findOrFail($id);
+        $table->delete();
+        return redirect('/roles');
+    }
+    //UNIDADES----------------------------------------------------------------------------------
+    public function list_unidades()
+    {
+        $unidades = Unidad::all();
+        $type_list = 'unidades';
+        $title='Lista de Unidades';
+        return view('pages.unidades.list')->with([
+            'unidades'=>$unidades,
+            'type_list' =>$type_list,
+            'title'=>$title
+        ]);
+    }
+    public function unidades_create(){
+        $type_list = 'unidades';
+        $title='Crear de Unidad';
+        return view('pages.unidades.create',
+            [
+                'type_list' =>$type_list,
+                'title'=>$title
+            ]
+        );
+    }
+    public function unidades_store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nom_unidad' => 'required',
+            // Add validation rules for other fields here
+        ]);
+        Unidad::create($validatedData);
+        return redirect()->route('unidad');
+    }
+    public function unidad_show($id)
+    {
+        $unidad = Unidad::find($id);
+        $type_list = 'unidades';
+        $title='Editar de Unidad';
+        return view('pages.unidades.show', [
+            'unidad' => $unidad,
+            'type_list' =>$type_list,
+            'title'=>$title,
+        ]);
+    }
+    public function unidad_update(Request $request, $id)
+    {
+        $unidad = Unidad::findOrFail($id);
+        $requestData = $request->all();
+        $unidad->update($requestData);
+        return redirect('/unidades');
+    }
+    public function unidad_destroy($id)
+    {
+        $table = Unidad::findOrFail($id);
+        $table->delete();
+        return redirect('/unidades');
+    }
 //EMPLOYEES----------------------------------------------------------------------------------
     public function list_employees()
     {

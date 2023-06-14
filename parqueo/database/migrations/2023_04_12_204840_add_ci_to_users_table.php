@@ -16,9 +16,9 @@ class AddCiToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('ci')->nullable();
             $table->string('celular')->nullable();
-            $table->unsignedBigInteger('cargo_id');
+            $table->unsignedBigInteger('cargo_id')->nullable();
             $table->foreign('cargo_id')->references('id')->on('cargos')->onDelete('cascade');
-            $table->unsignedBigInteger('unidad_id');
+            $table->unsignedBigInteger('unidad_id')->nullable();
             $table->foreign('unidad_id')->references('id')->on('unidades')->onDelete('cascade');
 
         });

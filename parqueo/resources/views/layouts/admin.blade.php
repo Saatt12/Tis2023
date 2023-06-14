@@ -13,7 +13,19 @@
                 <ul class="list-unstyled ps-3">
 
                     @if(@auth()->user()->rol->nom_role!=="GUARDIA")
-                    <li>
+                        <li>
+                            <a class="@if (@$type_list === 'cargos') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                               href="{{ url('/cargos') }}">Cargos </a>
+                        </li>
+                        <li>
+                            <a class="@if (@$type_list === 'unidades') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                               href="{{ url('/unidades') }}">Unidades</a>
+                        </li>
+                        <li>
+                            <a class="@if (@$type_list === 'roles') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
+                               href="{{ url('/roles') }}">Roles </a>
+                        </li>
+                        <li>
                         <a class="@if (@$type_list === 'cliente') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn "
                             href="{{ url('/home') }}">Lista Clientes </a>
                     </li>

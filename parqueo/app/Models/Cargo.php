@@ -9,5 +9,6 @@ class Cargo extends Model
 {
     use HasFactory;
     protected $table = "cargos";
+    protected $fillable = ['nom_cargo'];
 
 }

@@ -9,4 +9,5 @@ class Unidad extends Model
 {
     use HasFactory;
     protected $table = "unidades";
+    protected $fillable = ['nom_unidad'];
 }

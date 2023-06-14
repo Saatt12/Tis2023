@@ -33,8 +33,29 @@ Route::post('/horarios', [App\Http\Controllers\HomeController::class, 'horarios_
 Route::get('/horarios/{id}', [App\Http\Controllers\HomeController::class, 'horario_show'])->name('horario.show');
 Route::put('/horarios/{id}',  [App\Http\Controllers\HomeController::class, 'horario_update'])->name('horario.update');
 Route::delete('/horarios/{id}', [App\Http\Controllers\HomeController::class, 'horario_destroy'])->name('horario.destroy');
+//cargos
+Route::get('/cargos', [App\Http\Controllers\HomeController::class, 'list_cargos'])->name('cargo');
+Route::get('/cargos/create', [App\Http\Controllers\HomeController::class, 'cargos_create'])->name('cargo.create');
+Route::post('/cargos', [App\Http\Controllers\HomeController::class, 'cargos_store'])->name('cargo.store');
+Route::get('/cargos/{id}', [App\Http\Controllers\HomeController::class, 'cargo_show'])->name('cargo.show');
+Route::put('/cargos/{id}',  [App\Http\Controllers\HomeController::class, 'cargo_update'])->name('cargo.update');
+Route::delete('/cargos/{id}', [App\Http\Controllers\HomeController::class, 'cargo_destroy'])->name('cargo.destroy');
+//unidades
+Route::get('/unidades', [App\Http\Controllers\HomeController::class, 'list_unidades'])->name('unidad');
+Route::get('/unidades/create', [App\Http\Controllers\HomeController::class, 'unidades_create'])->name('unidad.create');
+Route::post('/unidades', [App\Http\Controllers\HomeController::class, 'unidades_store'])->name('unidad.store');
+Route::get('/unidades/{id}', [App\Http\Controllers\HomeController::class, 'unidad_show'])->name('unidad.show');
+Route::put('/unidades/{id}',  [App\Http\Controllers\HomeController::class, 'unidad_update'])->name('unidad.update');
+Route::delete('/unidades/{id}', [App\Http\Controllers\HomeController::class, 'unidad_destroy'])->name('unidad.destroy');
+//roles
+Route::get('/roles', [App\Http\Controllers\HomeController::class, 'list_roles'])->name('role');
+Route::get('/roles/create', [App\Http\Controllers\HomeController::class, 'roles_create'])->name('role.create');
+Route::post('/roles', [App\Http\Controllers\HomeController::class, 'roles_store'])->name('role.store');
+Route::get('/roles/{id}', [App\Http\Controllers\HomeController::class, 'role_show'])->name('role.show');
+Route::put('/roles/{id}',  [App\Http\Controllers\HomeController::class, 'role_update'])->name('role.update');
+Route::delete('/roles/{id}', [App\Http\Controllers\HomeController::class, 'role_destroy'])->name('role.destroy');
 
-//horarios
+//employees
 Route::get('/employees', [App\Http\Controllers\HomeController::class, 'list_employees'])->name('employee');
 Route::get('/employees/create', [App\Http\Controllers\HomeController::class, 'employees_create'])->name('employee.create');
 Route::post('/employees', [App\Http\Controllers\HomeController::class, 'employees_store'])->name('employee.store');

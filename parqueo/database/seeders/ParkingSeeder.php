@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Cargo;
 use App\Models\Parking;
 use App\Models\Rol;
+use App\Models\Unidad;
 use Illuminate\Database\Seeder;
 
 class ParkingSeeder extends Seeder
@@ -24,6 +25,10 @@ class ParkingSeeder extends Seeder
             ['nom_role'=>'GUARDIA'],
         ];
         Rol::insert($data_rol);
+        $data_rol = [
+            ['nom_unidad'=>'Ing. Sistemas'],
+        ];
+        Unidad::insert($data_rol);
         $data_cargo = [
             ['nom_cargo'=>'Administrativo'],
         ];

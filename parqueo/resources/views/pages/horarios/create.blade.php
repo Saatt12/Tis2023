@@ -15,7 +15,7 @@
                                 <div class="col-md-6">
                                     <input id="name" type="text"
                                            class="form-control @error('nom_turno') is-invalid @enderror" name="nom_turno"
-                                           value="" required autocomplete="name" autofocus>
+                                           value="{{old('nom_turno')}}" required autocomplete="name" autofocus>
 
                                     @error('nom_turno')
                                     <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                                     <select id="horario_entrada" class="form-control @error('hora_entrada') is-invalid @enderror" name="hora_entrada" required autofocus>
                                         <option value="" selected> Selecciona una hora</option>
                                         @for ($i = 0; $i < 24; $i++)
-                                            <option value="{{$i}}:00">{{$i}}:00
+                                            <option value="{{$i}}:00" {{ old('hora_entrada') == $i ? "selected" : "" }}>{{$i}}:00
                                                 @if($i>=0 && $i<12)
                                                     AM
                                                 @endif
@@ -41,7 +41,7 @@
                                         @endfor
                                     </select>
 
-                                    @error('cargo_id')
+                                    @error('hora_entrada')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -54,7 +54,7 @@
                                      <select id="horario_salida" class="form-control @error('hora_salida') is-invalid @enderror" name="hora_salida" required autofocus>
                                         <option value="" selected> Selecciona una Hora</option>
                                         @for ($i = 0; $i < 24; $i++)
-                                            <option value="{{$i}}:00">{{$i}}:00
+                                            <option value="{{$i}}:00" {{ old('hora_salida') == $i ? "selected" : "" }}>{{$i}}:00
                                                 @if($i>=0 && $i<12)
                                                     AM
                                                 @endif
@@ -65,7 +65,7 @@
                                         @endfor
                                     </select>
 
-                                    @error('cargo_id')
+                                    @error('hora_salida')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

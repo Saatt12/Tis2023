@@ -7,6 +7,7 @@ use App\Models\Claim;
 use App\Models\Conversation;
 use App\Models\ConversationMessage;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\Parking;
 use App\Models\Payment;
 use App\Models\RequestForm;
@@ -47,9 +48,16 @@ class ClientController extends Controller
         }
         $announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
         $my_request = null;
+        $count_available_request = 0;
         if($announcement){
           $my_request = RequestForm::where('user_id',$user_auth->id)->where('announcement_id',$announcement->id)->whereNotNull('parking_id')->first();
+          $requests = RequestForm::where('announcement_id',$announcement->id)->count();
+            $count_available_request=$announcement->cantidad_espacios - $requests;
         }
+        $notifications = Notification::where('user_id',$user_auth->id)->where('is_read',false)->get();
+
+
+
         $title='PARQUEO UMSS';
         return view('page_client.home')->with([
             'type_list' =>$type_list,
@@ -59,7 +67,9 @@ class ClientController extends Controller
             'parkings'=>$parkings,
             'my_request'=>$my_request,
             'news_messages'=>$news_messages,
-            'announcement' =>$announcement
+            'announcement' =>$announcement,
+            'notifications' =>$notifications,
+            'count_available_request'=>$count_available_request
         ]);
     }
     /**
@@ -357,5 +367,11 @@ class ClientController extends Controller
         ConversationMessage::whereIn('conversation_id', $conversation_ids)->delete();
         Conversation::whereIn('id', $conversation_ids)->delete();
         return redirect('/conversations');
+    }
+    //Notifications
+    public function clear_notification(){
+       // dd(Auth::id());
+        Notification::where('user_id',Auth::id())->where('is_read',false)->update(['is_read'=>true]);
+        echo 'succesfully cleared';
     }
 }

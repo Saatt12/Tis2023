@@ -40,14 +40,30 @@
                 <div>
                     <div class="dropdown">
                         <button class="btn btn-primary bg-blue-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Notificaciones <span class="bg-blue-dark-light-2 badge badge-light">4</span>
+                            Notificaciones
+                                <span class="bg-blue-dark-light-2 badge badge-light">
+                                    {{$notifications && sizeof($notifications)>0?sizeof($notifications):0}}
+                                </span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @if($notifications && sizeof($notifications)>0)
+                                @foreach($notifications as $notification)
+                                    <li>
+                                        <div class="text-center border border border-primary m-2">
+                                            <h5>{{$notification->title}}</h5>
+                                            <p class="m-0">
+                                                {{$notification->content}}
+                                            </p>
+                                        </div>
+                                    </li>
+                                @endforeach
                             <li>
-                                <a class="dropdown-item" href="#">Action</a>
+                                <form id="clear_notification" method="POST" action="{{ route('clear_notification') }}">
+                                    @csrf
+                                   <button type="submit" class="btn btn-danger small">Limpiar Notificaciones</button>
+                                </form>
                             </li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -80,4 +96,30 @@
 @endsection
 @section('scripts_news')
     @yield('scripts')
+    <script>
+        $("#clear_notification").validate({
+            submitHandler: function(form) {
+                let token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: 'POST',
+                    url: $(form).attr('action'),
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    success: function(response) {
+                        console.log("-> response", response);
+                        /*$('#payment_mode_').modal('hide')
+                        $('#success_payment_modal_').modal('show')*/
+                        location.reload()
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("-> error", error);
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

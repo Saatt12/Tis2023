@@ -14,6 +14,12 @@
                 @else
                     <img class="img-fluid" src="{{ asset('images/advertising.png') }}" alt="">
                 @endif
+                <div>
+                    Espacios disponibles: {{@$count_available_request?@$count_available_request:0}}
+                </div>
+                <div class="col-md-6">
+                    <a href="{{asset('storage/'.@$announcement->file_announcement)}}" target="_blank"> Descargar Convocatoria</a>
+                </div>
             </div>
             <div class="col-9">
                 <div class="row pt-3">
@@ -56,9 +62,9 @@
                 </div>
                 <div class="row align-content-stretch">
                     @foreach ($parkings as $parking)
-                        <div class="col-2">
+                        <div class="col-2 text-center">
                             @if($parking->status==='unavailable')
-                                <p class="{{@$my_request && $my_request->parking_id ===$parking->id?'text-blue-dark':'text-red-cherry'}}">{{ $parking->name }}</p>
+                                <p class="{{@$my_request && $my_request->parking_id ===$parking->id?'text-white bg-blue-dark border-radius':'text-red-cherry'}}">{{ $parking->name }}</p>
                             @else
                                 <p>{{ $parking->name }}</p>
                             @endif

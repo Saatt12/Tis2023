@@ -10,6 +10,7 @@ use App\Models\ConversationMessage;
 use App\Models\Horario;
 use App\Models\IncomeVehicle;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\Parking;
 use App\Models\Payment;
 use App\Models\Permission;
@@ -20,12 +21,14 @@ use App\Models\Unidad;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Rules\ConvocatoriaDateRule;
+use App\Rules\TimeHorarioRange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Validation\Rule;
 use PDF;
 
 class HomeController extends Controller
@@ -117,9 +120,9 @@ class HomeController extends Controller
     public function horarios_store(Request $request)
     {
         $validatedData = $request->validate([
-            'hora_entrada' => 'required',
-            'hora_salida' => 'required',
-            'nom_turno' => 'required',
+            'hora_entrada' => ['required',new TimeHorarioRange($request->hora_salida)],
+            'hora_salida' => ['required',new TimeHorarioRange(null)],
+            'nom_turno' => ['required',Rule::unique('horarios')],
             // Add validation rules for other fields here
         ]);
         Horario::create($validatedData);
@@ -448,8 +451,13 @@ class HomeController extends Controller
             $random_parkings = Parking::where('status','available')->inRandomOrder()->take($count_request)->pluck('id');
             if($request_valids && sizeof($request_valids)>0){
                 foreach ($request_valids as $index =>$item_request){
-                    RequestForm::where('id', $item_request)->update([
+                    $request_form = RequestForm::where('id', $item_request)->update([
                         'parking_id' => $random_parkings[$index],
+                    ]);
+                    Notification::create([
+                        'user_id'=>$request_form->user_id,
+                        'title'=>'Parqueo Asignado',
+                        'content'=>'Ya puede realizar el pago en las distintas modalidades QR o de forma Manual'
                     ]);
                 }
                 Parking::whereIn('id',$random_parkings)->update(['status'=>'unavailable']);
@@ -483,6 +491,11 @@ class HomeController extends Controller
             if(@$parking_id){
                 Parking::where('id',$parking_id)->update(['status'=>'unavailable']);
                 RequestForm::where('id',$request_form_id)->update(['parking_id'=>$parking_id]);
+                Notification::create([
+                    'user_id'=>$request_form->user_id,
+                    'title'=>'Parqueo Reasignado',
+                    'content'=>'Se realizo un cambio en el parqeuo asignado'
+                ]);
             }else{
                 RequestForm::where('id',$request_form_id)->update(['parking_id'=>null]);
             }
@@ -490,6 +503,11 @@ class HomeController extends Controller
             if(@$parking_id){
                 Parking::where('id',$parking_id)->update(['status'=>'unavailable']);
                 RequestForm::where('id',$request_form_id)->update(['parking_id'=>$parking_id]);
+                Notification::create([
+                    'user_id'=>$request_form->user_id,
+                    'title'=>'Parqueo Asignado',
+                    'content'=>'Ya puede realizar el pago en las distintas modalidades QR o de forma Manual'
+                ]);
             }else{
                 RequestForm::where('id',$request_form_id)->update(['parking_id'=>null]);
             }
@@ -727,7 +745,7 @@ class HomeController extends Controller
         $type_list = 'conversations';
         $title='Mensaje';
         $user = Auth::user();
-        $users = User::where('id','!=' ,$user->id)->where('rol_id','!=',$this->role_client)->get();
+        $users = User::where('id','!=' ,$user->id)->get();
         return view('pages.conversations.correos')->with([
             'type_list' =>$type_list,
             'title'=>$title,

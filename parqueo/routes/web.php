@@ -149,6 +149,8 @@ Route::prefix('client')->group(function () {
         Route::get('/conversation_emails',  'conversation_emails')->name('conversation_emails_client');
         Route::post('/conversation_emails',  'conversation_emails_store')->name('conversation_emails.store_client');
         Route::delete('/conversation_emails',  'conversation_emails_remove')->name('conversation_emails.delete_client');
+        //Clear Notification
+        Route::post('/clear_notification',  'clear_notification')->name('clear_notification');
     });
    /* Route::get('/', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
     //register vehicle

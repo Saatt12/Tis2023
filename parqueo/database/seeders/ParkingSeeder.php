@@ -86,6 +86,10 @@ class ParkingSeeder extends Seeder
             ['name'=>"Enviar mensaje Multiple",'key'=>'enviar_mensaje_multiple','type'=>'mensaje'],
             ['name'=>"Enviar mensaje Individual",'key'=>'enviar_mensaje_individual','type'=>'mensaje'],
             ['name'=>"Eliminar mensaje",'key'=>'eliminar_mensaje','type'=>'mensaje'],
+
+            ['name'=>"Ver cobros",'key'=>'ver_cobros','type'=>'cobro'],
+            ['name'=>"Crear Cobro",'key'=>'crear_cobro','type'=>'cobro'],
+            ['name'=>"Validar Cobro",'key'=>'validar_cobro','type'=>'cobro'],
         ]);
     }
 }

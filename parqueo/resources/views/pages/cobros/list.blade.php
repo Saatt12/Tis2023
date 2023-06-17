@@ -34,11 +34,12 @@
         </div>
     </div>
     <div>
+        @if(@$user_permission->contains('crear_cobro'))
         <a href=""
           class="btn btn btn-primary me-3 my-2"
           data-bs-toggle="modal"
           data-bs-target="#payment_mode_">Realizar Cobro Manual</a>
-
+            @endif
     </div>
     <table class="table table-striped table-blue-light">
         <thead>
@@ -157,7 +158,7 @@
                         <button type="button" class="btn btn-secondary bg-blue-dark"
                                 data-bs-dismiss="modal">Cerrar</button>
                     </div>
-                    @if(@$payment->type==='qr' && !@$payment->status)
+                    @if(@$payment->type==='qr' && !@$payment->status &&  @$user_permission->contains('validar_cobro'))
                         <div class="col-4">
                             <form action="{{route('cobro.verified')}}" method="POST">
                                 @csrf

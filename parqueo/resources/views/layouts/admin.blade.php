@@ -78,10 +78,13 @@
                            href="{{ url('/conversations') }}">Mensajes</a>
                     </li>
                     @endif
+                        @if(@$user_permission->contains('ver_cobros'))
+
                         <li>
                             <a class="@if (@$type_list === 'cobros') active-item-nav @endif text-dark text-decoration-none btn-item-nav btn"
                                href="{{ url('/cobros') }}">Cobros</a>
                         </li>
+                        @endif
                 </ul>
             </div>
         </nav>

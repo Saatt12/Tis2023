@@ -33,6 +33,7 @@ class AddCiToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(["ci", "celular", "cargo_id", "unidad_id"]);
+            $table->dropForeign(["cargo_id", "unidad_id"]);
         });
     }
 }

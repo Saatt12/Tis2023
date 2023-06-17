@@ -25,7 +25,7 @@
                                 <div class="col-5 pb-2">
                                    <h5 class="text-blue-dark"> Placa</h5>
                                 </div>
-                                @if(@auth()->user()->rol->nom_role==="GUARDIA")
+                                @if(@$user_permission->contains('horario_vehiculo'))
                                 <div class="col-3">
                                     <h5 class="text-blue-dark">
                                     HrE - HrS
@@ -41,12 +41,12 @@
                                     <div class="col-5 pb-2">
                                        {{ $vehicle->placa }}
                                     </div>
-                                    @if(@auth()->user()->rol->nom_role==="GUARDIA")
-                                        <div class="col-3">
+                                    @if(@$user_permission->contains('horario_vehiculo'))
+                                    <div class="col-3">
                                             {{@$vehicle->hour_vehicle->hora_entrada}} - {{@$vehicle->hour_vehicle->hora_salida}}
                                         </div>
                                     @endif
-                                    @if(@auth()->user()->rol->nom_role==="GUARDIA")
+                                    @if(@$user_permission->contains('horario_vehiculo'))
                                         <div class="col-4 pb-2 d-flex">
                                             <a data-bs-toggle="modal"
                                                data-bs-target="#vehicle_hour_{{ $vehicle->id }}"

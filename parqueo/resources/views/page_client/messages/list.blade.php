@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.client')
 {{--@section('subhead-custom')
 <div class="d-flex">
     <form action="{{route('search_request')}}" method="POST">
@@ -15,9 +15,11 @@
             {{ session('success') }}
         </div>
     @endif
-    @if(@$user_permission->contains('enviar_mensaje_multiple'))
-    <a href="{{url('/conversation_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
-    @endif
+    <div class="d-flex">
+        <a href="{{url('/client')}}" class="btn btn-primary m-2">ir a Home</a>
+        <a href="{{url('/client/conversation_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
+    </div>
+
     <table class="table table-striped table-blue-light">
         <thead>
         <tr>
@@ -25,7 +27,6 @@
             <th scope="col">CI</th>
             <th scope="col">Email</th>
             <th scope="col">
-                @if(@$user_permission->contains('eliminar_mensaje'))
                 <button onclick="selectedAll()" type="button" class="btn btn-primary bg-blue-dark">
                     Seleccionar Todo
                 </button>
@@ -38,7 +39,6 @@
                 >
                     Eliminar
                 </button>
-                @endif
             </th>
 
         </tr>
@@ -50,21 +50,17 @@
                 <td>{{$conversation->receiver_id!==auth()->user()->id?$conversation->receiver->ci:$conversation->sender->ci}}</td>
                 <td>{{$conversation->receiver_id!==auth()->user()->id?$conversation->receiver->email:$conversation->sender->email}}</td>
                 <td>
-                    @if(@$user_permission->contains('enviar_mensaje_individual'))
                     <div class="row justify-content-center">
                         <div class="col-3">
                             <a
-                                href="{{url('/conversations_messages/'.$conversation->id)}}"
+                                href="{{url('/client/conversations_messages/'.$conversation->id)}}"
                                 class="text-blue-dark text-decoration-none"
                             > Ver </a>
                         </div>
                         <div class="col-1">
-                            @endif
-                            @if(@$user_permission->contains('eliminar_mensaje'))
                     <input type="checkbox" name="items[]" value="{{$conversation->id}}" class="form-check-input">
-                            @endif
-                        </div></div>
 
+                        </div></div>
                 </td>
             </tr>
         @endforeach
@@ -72,7 +68,7 @@
     </table>
     <x-generic-modal name="reject-modal" title="Confirmar">
         <x-slot name="content" class="">
-            <form action="{{ route('conversation_emails.delete') }}" method="POST">
+            <form action="{{ route('conversation_emails.delete_client') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <p>

@@ -15,7 +15,9 @@
             {{ session('success') }}
         </div>
     @endif
+    @if(@$user_permission->contains('responder_reclamo_multiple'))
     <a href="{{url('/messages_emails')}}" class="btn btn-primary my-2">Enviar Mensajess </a>
+    @endif
     <table class="table table-striped table-blue-light">
         <thead>
         <tr>
@@ -23,6 +25,7 @@
             <th scope="col">CI</th>
             <th scope="col">Email</th>
             <th scope="col">
+                @if(@$user_permission->contains('eliminar_reclamo'))
                 <button onclick="selectedAll()" type="button" class="btn btn-primary bg-blue-dark">
                     Seleccionar Todo
                 </button>
@@ -35,6 +38,7 @@
                 >
                     Eliminar
                 </button>
+                @endif
             </th>
 
         </tr>
@@ -46,6 +50,7 @@
                 <td>{{$claim->user->ci}}</td>
                 <td>{{$claim->user->email}}</td>
                 <td>
+                    @if(@$user_permission->contains('responder_reclamo_individual'))
                     <div class="row justify-content-center">
                         <div class="col-3">
                             <a
@@ -57,6 +62,7 @@
                     <input type="checkbox" name="items[]" value="{{$claim->id}}" class="form-check-input">
 
                         </div></div>
+                    @endif
                 </td>
             </tr>
         @endforeach

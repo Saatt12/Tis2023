@@ -19,5 +19,6 @@ class Announcement extends Model
         'monto_anual',
         'cantidad_espacios',
         'image',
+        'file_announcement'
     ];
 }

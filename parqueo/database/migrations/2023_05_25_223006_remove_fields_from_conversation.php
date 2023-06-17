@@ -28,9 +28,9 @@ class RemoveFieldsFromConversation extends Migration
     public function down()
     {
         Schema::table('conversations', function (Blueprint $table) {
-            $table->boolean('is_read');
-            $table->string('message');
-            $table->string('type');
+            $table->boolean('is_read')->nullable();
+            $table->string('message')->nullable();
+            $table->string('type')->nullable();
         });
     }
 }

@@ -2,7 +2,9 @@
 
 @section('content-admin')
     <div >
+        @if(@$user_permission->contains('crear_rol'))
         <a href="{{route('role.create')}}" class="btn btn-primary m-2"> Añadir Cargo</a>
+        @endif
     </div>
     <table class="table table-striped table-blue-light">
         <thead>
@@ -16,13 +18,17 @@
             <tr>
                 <td>{{$role->nom_role}}</td>
                 <td>
+                    @if(@$user_permission->contains('editar_rol'))
                     <a type="button" class="text-decoration-none me-3" href="{{ route('role.show', ['id' => $role->id]) }}">
                         Editar
                     </a>
+                    @endif
                     @if(!($role->id>=1 && $role->id<=4))
-                    <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{$role->id}}">
+                    @if(@$user_permission->contains('eliminar_rol'))
+                        <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{$role->id}}">
                         Eliminar
                     </a>
+                            @endif
 
                     <!-- Modal -->
                     <div class="modal fade" id="staticBackdrop{{$role->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

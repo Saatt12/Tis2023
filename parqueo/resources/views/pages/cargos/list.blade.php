@@ -1,9 +1,11 @@
 @extends('layouts.admin')
 
 @section('content-admin')
+    @if(@$user_permission->contains('crear_cargo'))
     <div >
         <a href="{{route('cargo.create')}}" class="btn btn-primary m-2"> Añadir Cargo</a>
     </div>
+    @endif
     <table class="table table-striped table-blue-light">
         <thead>
         <tr>
@@ -16,12 +18,16 @@
             <tr>
                 <td>{{$cargo->nom_cargo}}</td>
                 <td>
+                    @if(@$user_permission->contains('editar_cargo'))
                     <a type="button" class="text-decoration-none me-3" href="{{ route('cargo.show', ['id' => $cargo->id]) }}">
                         Editar
                     </a>
+                    @endif
+                    @if(@$user_permission->contains('eliminar_cargo'))
                     <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{$cargo->id}}">
                         Eliminar
                     </a>
+                    @endif
 
                     <!-- Modal -->
                     <div class="modal fade" id="staticBackdrop{{$cargo->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

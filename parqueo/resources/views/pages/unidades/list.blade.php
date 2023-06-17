@@ -2,7 +2,9 @@
 
 @section('content-admin')
     <div >
+         @if(@$user_permission->contains('crear_unidad'))
         <a href="{{route('unidad.create')}}" class="btn btn-primary m-2"> Añadir Cargo</a>
+        @endif
     </div>
     <table class="table table-striped table-blue-light">
         <thead>
@@ -16,12 +18,16 @@
             <tr>
                 <td>{{$unidad->nom_unidad}}</td>
                 <td>
+                     @if(@$user_permission->contains('editar_unidad'))
                     <a type="button" class="text-decoration-none me-3" href="{{ route('unidad.show', ['id' => $unidad->id]) }}">
                         Editar
                     </a>
+                    @endif
+                     @if(@$user_permission->contains('eliminar_unidad'))
                     <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{$unidad->id}}">
                         Eliminar
                     </a>
+                     @endif
 
                     <!-- Modal -->
                     <div class="modal fade" id="staticBackdrop{{$unidad->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

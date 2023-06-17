@@ -75,6 +75,11 @@ Route::post('/send_claim_message', [App\Http\Controllers\HomeController::class, 
 Route::get('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails'])->name('messages_emails');
 Route::post('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_store'])->name('messages_emails.store');
 Route::delete('/messages_emails', [App\Http\Controllers\HomeController::class, 'messages_emails_remove'])->name('messages_emails.delete');
+//Cobros
+Route::get('/cobros', [App\Http\Controllers\HomeController::class, 'list_cobros'])->name('cobros');
+Route::post('/verified_payment', [App\Http\Controllers\HomeController::class, 'cobros_verified'])->name('cobro.verified');
+Route::post('/cobros', [App\Http\Controllers\HomeController::class, 'cobros_store'])->name('cobro.store');
+Route::post('/search_cobros_payments', [App\Http\Controllers\HomeController::class, 'search_cobros_payments'])->name('cobro.search');
 
 //Parkings
 Route::get('/parking', [App\Http\Controllers\HomeController::class, 'parking'])->name('parking.index');
@@ -130,11 +135,20 @@ Route::prefix('client')->group(function () {
         //payment
         Route::post('/payment','payment_store')->name('payment.store');
         Route::get('/payments','payments')->name('payments');
+        Route::post('/export_payment_factura','export_payment_factura')->name('export_payment_factura');
         //Request
         Route::post('/request_form','request_form')->name('request_form.store');
         //Claims
         Route::get('/claims','claims')->name('claims.index');
         Route::post('/claim','claim_store')->name('claim.store');
+
+        //Conversation
+        Route::get('/conversations',  'list_conversations')->name('conversations_client');
+        Route::get('/conversations_messages/{conversation_id}',  'conversations_messages')->name('conversations_messages_client');
+        Route::post('/send_conversation_message',  'send_conversation_message')->name('send_conversation_message_client');
+        Route::get('/conversation_emails',  'conversation_emails')->name('conversation_emails_client');
+        Route::post('/conversation_emails',  'conversation_emails_store')->name('conversation_emails.store_client');
+        Route::delete('/conversation_emails',  'conversation_emails_remove')->name('conversation_emails.delete_client');
     });
    /* Route::get('/', [App\Http\Controllers\ClientController::class, 'index'])->name('home_client');
     //register vehicle

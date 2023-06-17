@@ -2,7 +2,9 @@
 
 @section('content-admin')
     <div >
+        @if(@$user_permission->contains('crear_horario'))
         <a href="{{route('horario.create')}}" class="btn btn-primary m-2"> Añadir Horario</a>
+        @endif
     </div>
     <table class="table table-striped table-blue-light">
         <thead>
@@ -19,12 +21,16 @@
                 <td>{{$horario->nom_turno}}</td>
                 <td>{{$horario->hora_entrada}} - {{$horario->hora_salida}}</td>
                 <td>
+                    @if(@$user_permission->contains('editar_horario'))
                     <a type="button" class="text-decoration-none me-3" href="{{ route('horario.show', ['id' => $horario->id]) }}">
                         Editar
                     </a>
+                    @endif
+                    @if(@$user_permission->contains('eliminar_horario'))
                     <a type="button" class="text-decoration-none text-red-cherry" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         Eliminar
                     </a>
+                    @endif
 
                     <!-- Modal -->
                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

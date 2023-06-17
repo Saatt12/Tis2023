@@ -12,11 +12,14 @@ use App\Models\IncomeVehicle;
 use App\Models\Message;
 use App\Models\Parking;
 use App\Models\Payment;
+use App\Models\Permission;
 use App\Models\RequestForm;
 use App\Models\Rol;
+use App\Models\RolePermission;
 use App\Models\Unidad;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Rules\ConvocatoriaDateRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -228,10 +231,12 @@ class HomeController extends Controller
     public function roles_create(){
         $type_list = 'roles';
         $title='Crear de Rol';
+        $permissions = Permission::all();
         return view('pages.roles.create',
             [
                 'type_list' =>$type_list,
-                'title'=>$title
+                'title'=>$title,
+                'permissions'=>$permissions
             ]
         );
     }
@@ -241,7 +246,12 @@ class HomeController extends Controller
             'nom_role' => 'required',
             // Add validation rules for other fields here
         ]);
-        Rol::create($validatedData);
+        $rol = Rol::create($validatedData);
+        $data_admin_permission = [];
+        foreach ($request->permissions as $permission) {
+            array_push($data_admin_permission,['rol_id'=>$rol->id,'permission_id'=>$permission]);
+        }
+        RolePermission::insert($data_admin_permission);
         return redirect()->route('role');
     }
     public function role_show($id)
@@ -249,16 +259,26 @@ class HomeController extends Controller
         $role = Rol::find($id);
         $type_list = 'roles';
         $title='Editar de Rol';
+        $permissions = Permission::all();
+        $role_permissions = RolePermission::where('rol_id',$id)->pluck('permission_id');
         return view('pages.roles.show', [
             'role' => $role,
             'type_list' =>$type_list,
             'title'=>$title,
+            'permissions'=>$permissions,
+            'role_permissions'=>$role_permissions
         ]);
     }
     public function role_update(Request $request, $id)
     {
         $role = Rol::findOrFail($id);
-        $requestData = $request->all();
+        RolePermission::where('rol_id',$role->id)->delete();
+        $data_admin_permission = [];
+        foreach ($request->permissions as $permission) {
+            array_push($data_admin_permission,['rol_id'=>$role->id,'permission_id'=>$permission]);
+        }
+        RolePermission::insert($data_admin_permission);
+        $requestData = $request->except(['permissions']);
         $role->update($requestData);
         return redirect('/roles');
     }
@@ -625,8 +645,8 @@ class HomeController extends Controller
     }
     public function announcement_store(Request $request){
         $validatedData = $request->validate([
-            'fecha_inicio'=>['required'],
-            'fecha_fin'=>['required'],
+            'fecha_inicio'=>['required',new ConvocatoriaDateRule($request->fecha_fin)],
+            'fecha_fin'=>['required',new ConvocatoriaDateRule(null)],
             'descuento'=>['required'],
             'multa'=>['required'],
             'monto_mes'=>['required'],
@@ -635,14 +655,22 @@ class HomeController extends Controller
             'monto_anual'=>['required'],
             'cantidad_espacios'=>['required'],
             'image'=>['required'],
+            'file_announcement'=>['required']
         ]);
         $requestData = $request->all();
         $image = $request->file('image');
-
         if ($image) {
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('public/announcement', $filename);
+            $image->move('storage/announcement', $filename);
             $requestData['image'] = 'announcement/'.$filename;
+        }
+        $file_announcement = $request->file('file_announcement');
+        if ($file_announcement) {
+            $filename = time() . '.' . $file_announcement->getClientOriginalExtension();
+            $file_announcement->storeAs('public/announcement', $filename);
+            $file_announcement->move('storage/announcement', $filename);
+            $requestData['file_announcement'] = 'announcement/'.$filename;
         }
         Announcement::create($requestData);
         return redirect('/parking');
@@ -992,4 +1020,90 @@ class HomeController extends Controller
         $search = $request->except('_token');
         return redirect()->route('reports_announcement',$search);
     }
+    //COBROS----------------------------------------------------------------------------------
+    public function list_cobros(Request $request)
+    {
+        $type_list = 'cobros';
+        $title='Pagos Parqueo';
+        $search = $request->all();
+        $date_initial='';
+        $date_fin='';
+        $name='';
+        $announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
+        $requests = [];
+        if($announcement){
+            $requests = RequestForm::where('announcement_id',$announcement->id)->whereNotNull('parking_id')->get();
+        }
+        if(sizeof($search)){
+            $payments = Payment::where('id','!=',null);
+            if($request && @$request->date_initial){
+                $payments = $payments->whereDate('created_at', '>=', $request->date_initial);
+                $date_initial = $request->date_initial;
+            }
+            if($request && @$request->date_fin){
+                $payments = $payments->whereDate('created_at', '<=', $request->date_fin);
+                $date_fin =$request->date_fin;
+            }
+            if($request && @$request->name){
+                $user_ids = User::where('name', 'ILIKE', '%' . $request->name . '%')->pluck('id');
+                $payments = $payments->whereIn('user_id',$user_ids);
+                $name =$request->name;
+            }
+            $payments = $payments->get();
+            return view('pages.cobros.list')->with([
+                'payments'=>$payments,
+                'type_list' =>$type_list,
+                'title'=>$title,
+                'date_initial' =>$date_initial,
+                'date_fin' =>$date_fin,
+                'name' =>$name,
+                'announcement'=>$announcement,
+                "requests"=>$requests
+            ]);
+        }else{
+            $payments_all = Payment::all();
+            return view('pages.cobros.list')->with([
+                'payments'=>$payments_all,
+                'type_list' =>$type_list,
+                'title'=>$title,
+                'date_initial' =>$date_initial,
+                'date_fin' =>$date_fin,
+                'name' =>$name,
+                'announcement'=>$announcement,
+                "requests"=>$requests
+            ]);
+        }
+    }
+    public function cobros_verified(Request $request){
+        $payment = Payment::findOrFail($request->payment_id);
+        $payment->status = 'Pagado';
+        $payment->save();
+        return redirect('/cobros');
+    }
+    public function cobros_store(Request $request)
+    {
+        $requestData = $request->all();
+        $announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
+        $requestData["announcement_id"] = $announcement->id;
+        $requestData["status"] = 'Pagado';
+        $comprobante = $request->file('comprobante');
+        if ($comprobante) {
+            $filename = time() . '.' . $comprobante->getClientOriginalExtension();
+            $comprobante->storeAs('public/comprobante', $filename);
+            $comprobante->move('storage/comprobante', $filename);
+            $requestData['comprobante'] = 'comprobante/'.$filename;
+        }
+        $payment = Payment::create($requestData);
+        return response()->json($payment);
+    }
+    public function search_cobros_payments(Request $request){
+        $search = $request->except('_token');
+        return redirect()->route('cobros',$search);
+    }
+    /*public function cobro_destroy($id)
+    {
+        $table = Payment::findOrFail($id);
+        $table->delete();
+        return redirect('/cobros');
+    }*/
 }

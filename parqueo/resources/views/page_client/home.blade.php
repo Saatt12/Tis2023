@@ -22,23 +22,30 @@
                     </div>
                     <div class="col-5">
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="" class="btn btn-danger bg-red-cherry me-3" data-bs-toggle="modal"
+                            <a href=""
+                               class="btn btn-danger bg-red-cherry me-3 {{@$my_request->parking_id?'':'disabled'}}"
+                               data-bs-toggle="modal"
                                 data-bs-target="#payment_mode_">Pagar</a>
-                            <a href="" class="btn btn-danger bg-red-cherry" data-bs-toggle="modal"
+                            <a href=""
+                               class="btn btn-danger bg-red-cherry  {{@$my_request->parking_id?'':'disabled'}}"
+                               data-bs-toggle="modal"
                                 data-bs-target="#modal-payment-list">Lista recibos</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="{{ url('client/vehicle') }}" class="btn btn-danger bg-red-cherry me-3">Registrar
-                                vehiculo</a>
+                            <a href="{{ url('client/vehicle') }}" class="btn btn-danger bg-red-cherry me-3">
+                                Registrar vehiculo</a>
                             <a href="" class="btn btn-danger bg-red-cherry" data-bs-toggle="modal"
                                 data-bs-target="#vehicle_registered_">Vehiculos registrados</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a class="btn btn-primary bg-blue-dark {{@$announcement?'':'disabled'}}" data-bs-toggle="modal"
+                            <a class="btn btn-primary bg-blue-dark {{@$announcement && sizeof($vehicles)>0?'':'disabled'}}" data-bs-toggle="modal"
                                 data-bs-target="#modal-request">Solicitud de parqueo</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="{{ url('/client/claims') }}" class="btn btn-primary bg-blue-dark">
+                            <a href="{{ url('/client/conversations') }}"
+                               class="btn btn-primary bg-blue-dark mx-2 {{@$my_request->parking_id?'':'disabled'}}"
+                               >Mensajes</a>
+                            <a href="{{ url('/client/claims') }}"  class="btn btn-primary bg-blue-dark {{@$my_request->parking_id?'':'disabled'}}">
                                 Reclamos
                                 @if(@$news_messages && @$news_messages>0)
                                     <span class="badge badge-light bg-white text-black">{{$news_messages}}</span>
@@ -208,7 +215,7 @@
                                 <label for="number" class="col-md-4 col-form-label">Nro de recibo</label>
                                 <div class="col-md-6">
                                     <input type="number" class="form-control" name="number"
-                                        value="{{ $payment->number }}" disabled>
+                                        value="{{ $payment->id }}" disabled>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -231,13 +238,14 @@
                                         value="{{ $payment->amount }}" disabled>
                                 </div>
                             </div>
+                            @if (@$payment->type === 'qr')
                             <div class="row mb-3">
                                 <label for="amount" class="col-md-4 col-form-label">Documento Adjunto</label>
-
                                 <div class="col-md-6">
                                     <a href="{{asset('storage/'.@$payment->comprobante)}}" target="_blank">{{@$payment->comprobante}}</a>
                                 </div>
                             </div>
+                            @endif
                             @if (@$payment->count)
                                 <div class="row mb-3 ">
                                     <label for="count" class="col-md-4 col-form-label">Meses</label>
@@ -261,6 +269,11 @@
                                         value="{{ auth()->user()->name }}">
                                 </div>
                             </div>
+                            <form method="POST" action="{{ route('export_payment_factura') }}" target="_blank">
+                                @csrf
+                                <input id="date_initial" type="hidden" value="{{$payment->id}}" name="payment_id">
+                                <button type="submit" class="btn btn-primary bg-blue-dark">Descargar Factura PDF</button>
+                            </form>
 
                         </x-slot>
                         <x-slot name="buttons">
@@ -294,7 +307,7 @@
                                                     onchange="selectedMethodPay(event)" name="type" required autofocus>
                                                     <option value="" selected> Selecciona una Modalidad</option>
                                                     <option value="qr"> Qr</option>
-                                                    <option value="manual"> Manual</option>
+{{--                                                    <option value="manual"> Manual</option>--}}
                                                 </select>
                                             </div>
                                         </div>
@@ -306,13 +319,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
+                                            {{--<div class="row mb-3">
                                                 <label for="number" class="col-md-4 col-form-label">Nro de recibo</label>
                                                 <div class="col-md-6">
                                                     <input id="number" type="number" class="form-control"
                                                         name="number" value="" required autocomplete="number">
                                                 </div>
-                                            </div>
+                                            </div>--}}
                                             <div class="row mb-3">
                                                 <label for="plan" class="col-md-4 col-form-label">Plan de pago</label>
                                                 <div class="col-md-6">

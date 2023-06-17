@@ -25,6 +25,33 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <label for="nom_role" class="col-md-4 col-form-label">Permisos</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach($permissions as $key=>$permission)
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input {{$permission->type!==@$permissions[$key-1]->type?'parent-checkbox':$permission->type}}"
+                                                           name="permissions[]"
+                                                           data-target=".{{$permission->type}}"
+                                                           {{$permission->type===@$permissions[$key-1]->type?'disabled':''}}
+                                                           {{$role_permissions->contains($permission->id)?'checked':''}}
+                                                           type="checkbox" value="{{$permission->id}}"
+                                                           id="flexCheckDefault">
+                                                    <label class="form-check-label " for="flexCheckDefault">
+                                                        @if($permission->type!==@$permissions[$key-1]->type)
+                                                            <strong>{{$permission->name}} </strong>
+                                                        @else
+                                                            {{$permission->name}}
+                                                        @endif
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row mb-5 justify-content-center">
                                 <div class="col-md-3"></div>
 
@@ -45,4 +72,16 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.parent-checkbox').on('change', function() {
+                let target = $(this).data('target');
+                let isChecked = $(this).prop('checked');
+                $(target).prop('checked', isChecked).prop('disabled', !isChecked);
+            });
+            $('.parent-checkbox').trigger('change');
+        });
+    </script>
 @endsection

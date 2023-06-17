@@ -13,24 +13,21 @@
                     <img class="w-100" src="{{ asset('images/photo_parqueo.svg') }}" alt="">
                 </div>
                 <div class="col-5 d-flex align-items-center justify-content-center">
-                    @if(@auth()->user()->rol->nom_role!=="GUARDIA")
                     <div>
                         <div class="d-flex justify-content-center mb-4">
+                            @if(@$user_permission->contains('crear_convocatoria'))
                             <a href="{{url('/announcements/create')}}" class="btn btn-danger bg-red-cherry me-4">Convocatoria</a>
+                            @endif
+                            @if(@$user_permission->contains('ver_convocatoria'))
                             <a href="{{url('/announcements')}}" class="btn btn-danger bg-red-cherry">Lista Convocatoria</a>
+                                @endif
                         </div>
                         <div class="d-flex justify-content-center mb-4">
+                            @if(@$user_permission->contains('ver_vehiculos'))
                             <a href="{{url('/vehicles')}}" class="btn btn-danger bg-red-cherry">Vehiculos registrados</a>
+                            @endif
                         </div>
                     </div>
-                    @endif
-                    @if(@auth()->user()->rol->nom_role==="GUARDIA")
-                            <div>
-                                <div class="d-flex justify-content-center mb-4">
-                                    <a href="{{url('/vehicles')}}" class="btn btn-danger bg-red-cherry">Vehiculos registrados</a>
-                                </div>
-                            </div>
-                        @endif
 
                 </div>
             </div>

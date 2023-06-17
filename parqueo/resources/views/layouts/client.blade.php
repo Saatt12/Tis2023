@@ -38,6 +38,20 @@
             <div class="bg-blue-dark-light-2 d-flex justify-content-between py-3 px-3">
                 <h4 class="text-pink-light">{{ @$title }}</h4>
                 <div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary bg-blue-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Notificaciones <span class="bg-blue-dark-light-2 badge badge-light">4</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <a class="dropdown-item" href="#">Action</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
                     <div class=" dropdown  item-avatar">
                         <div id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -45,7 +59,6 @@
                                 {{ substr(Auth::user()->name, 0, 1) }}
                             </div>
                         </div>
-
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
@@ -59,9 +72,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
             @yield('content-admin')
 
         </div>

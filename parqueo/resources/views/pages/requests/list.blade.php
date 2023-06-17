@@ -21,10 +21,14 @@
             <th scope="col">Nombre</th>
             <th scope="col">CI</th>
             <th scope="col">Email</th>
+            <th scope="col">Asignado</th>
             <th scope="col">
+                @if(@$user_permission->contains('asignar_parqueo') || @$user_permission->contains('rechazar_parqueo'))
                 <button onclick="selectedAll()" type="button" class="btn btn-primary bg-blue-dark">
                     Seleccionar Todo
                 </button>
+                @endif
+                @if(@$user_permission->contains('asignar_parqueo'))
                 <button
                     type="button"
                     onclick="addDataChecks()"
@@ -34,6 +38,8 @@
                 >
                     Asignar Parqueo
                 </button>
+                    @endif
+                @if(@$user_permission->contains('rechazar_parqueo'))
                 <button
                     type="button"
                     class="btn btn-primary bg-blue-dark"
@@ -43,8 +49,8 @@
                 >
                     Rechazar
                 </button>
+                    @endif
             </th>
-
         </tr>
         </thead>
         <tbody>
@@ -53,6 +59,7 @@
                 <td>{{$request->user->name}}</td>
                 <td>{{$request->user->ci}}</td>
                 <td>{{$request->user->email}}</td>
+                <td>{{@$request->parking_id?'SI':'NO'}}</td>
                 <td>
                     <div class="row justify-content-center">
                         <div class="col-3">

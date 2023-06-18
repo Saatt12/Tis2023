@@ -16,18 +16,22 @@
                     </div>
                     <div class="pt-2">
                         <div class="text-center">
-                            <div class="row">
-                                @foreach ($announcements as $key => $announcement)
+                            @foreach ($announcements as $key => $announcement)
+                            <div class="row w-100 mx-0 p-1 {{@$current_announcement && $current_announcement->id===$announcement->id?'bg-grey-light':''}}">
                                     <div class="col-7 pb-2">
                                        Convocatoria {{ $announcement->fecha_inicio }} | {{ $announcement->fecha_fin }}
+                                        @if(@$current_announcement && $current_announcement->id===$announcement->id)
+                                        <strong> (Vigente)</strong>
+                                        @endif
                                     </div>
                                     <div class="col-5 pb-2">
                                         <a href="" class="btn btn-secondary bg-blue-dark"
                                            data-bs-toggle="modal"
                                            data-bs-target="#vehicle_show_{{ $announcement->id }}"> Ver </a>
                                     </div>
-                                @endforeach
+
                             </div>
+                            @endforeach
                             <div class="row justify-content-center">
                                 <div class="col-4">
                                     <a type="button" class="btn btn-secondary bg-blue-dark"
@@ -203,6 +207,10 @@
                                             <img class="img-fluid" id="image"
                                                  src="{{ asset('storage/' . $announcement->image) }}" alt="">
                                         </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <a href="{{asset('storage/'.@$announcement->file_announcement)}}" target="_blank"> Descargar Convocatoria</a>
                                     </div>
                                     <div class="row mb-5 justify-content-center">
                                         <div class="col-12 col-sm-4">

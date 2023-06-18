@@ -3,7 +3,7 @@
 @section('content-admin')
     <div >
          @if(@$user_permission->contains('crear_unidad'))
-        <a href="{{route('unidad.create')}}" class="btn btn-primary m-2"> Añadir Cargo</a>
+        <a href="{{route('unidad.create')}}" class="btn btn-primary m-2"> Añadir Unidad</a>
         @endif
     </div>
     <table class="table table-striped table-blue-light">

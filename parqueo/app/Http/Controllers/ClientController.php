@@ -285,7 +285,7 @@ class ClientController extends Controller
     public function list_conversations(){
         $type_list = 'conversations';
         $title='Mensajes';
-        $conversations = Conversation::all();
+        $conversations = Conversation::where('sender_id',Auth::id())->orWhere('receiver_id',Auth::id())->get();
         return view('page_client.messages.list')->with([
             'type_list' =>$type_list,
             'title'=>$title,

@@ -42,11 +42,11 @@
                         <button class="btn btn-primary bg-blue-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             Notificaciones
                                 <span class="bg-blue-dark-light-2 badge badge-light">
-                                    {{$notifications && sizeof($notifications)>0?sizeof($notifications):0}}
+                                    {{@$notifications && sizeof($notifications)>0?sizeof($notifications):0}}
                                 </span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            @if($notifications && sizeof($notifications)>0)
+                            @if(@$notifications && sizeof($notifications)>0)
                                 @foreach($notifications as $notification)
                                     <li>
                                         <div class="text-center border border border-primary m-2">

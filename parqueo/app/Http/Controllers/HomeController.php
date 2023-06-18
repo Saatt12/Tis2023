@@ -451,10 +451,11 @@ class HomeController extends Controller
             $random_parkings = Parking::where('status','available')->inRandomOrder()->take($count_request)->pluck('id');
             if($request_valids && sizeof($request_valids)>0){
                 foreach ($request_valids as $index =>$item_request){
-                    $request_form = RequestForm::where('id', $item_request)->update([
+                    RequestForm::where('id', $item_request)->update([
                         'parking_id' => $random_parkings[$index],
                     ]);
-                    Notification::create([
+                    $request_form =RequestForm::where('id', $item_request)->first();
+                        Notification::create([
                         'user_id'=>$request_form->user_id,
                         'title'=>'Parqueo Asignado',
                         'content'=>'Ya puede realizar el pago en las distintas modalidades QR o de forma Manual'
@@ -477,6 +478,11 @@ class HomeController extends Controller
             if($request_form->parking_id){
                 Parking::where('id',$request_form->parking_id)->update(['status'=>'available']);
             }
+            Notification::create([
+                'user_id'=>$request_form->user_id,
+                'title'=>'Parqueo Rechazado',
+                'content'=>'Su solitud de parqueo fue anulada'
+            ]);
         }
         RequestForm::whereIn('id', $request_form_ids)->delete();
         $request->session()->flash('success', 'Se removieron correctamente las solicitudes');
@@ -645,10 +651,12 @@ class HomeController extends Controller
         $type_list = 'parking';
         $title='Convocatoria';
         $announcement = Announcement::all();
+        $current_announcement = Announcement::whereDate('fecha_inicio', '<', Carbon::now())->whereDate('fecha_fin', '>', Carbon::now())->first();
         return view('pages.parking.list_announcement')->with([
             'type_list' =>$type_list,
             'title'=>$title,
-            'announcements' => $announcement
+            'announcements' => $announcement,
+            'current_announcement' => $current_announcement
         ]);
     }
     public function announcement_create(){
@@ -697,7 +705,7 @@ class HomeController extends Controller
     public function list_conversations(){
         $type_list = 'conversations';
         $title='Mensajes';
-        $conversations = Conversation::all();
+        $conversations = Conversation::where('sender_id',Auth::id())->orWhere('receiver_id',Auth::id())->get();
         return view('pages.conversations.list')->with([
             'type_list' =>$type_list,
             'title'=>$title,

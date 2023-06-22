@@ -96,7 +96,7 @@
 
                                         <div class="col-md-6">
                                             <input id="user" type="text" class="form-control" readonly
-                                                   value="{{ auth()->user()->name }}">
+                                                   value="{{ $vehicle->user->name }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">

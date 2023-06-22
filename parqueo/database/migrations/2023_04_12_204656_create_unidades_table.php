@@ -27,6 +27,7 @@ class CreateUnidadesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('users');
         Schema::dropIfExists('unidades');
     }
 }

@@ -15,8 +15,13 @@
                         <label for="date_initial" class="col-6 col-form-label">fecha inicial</label>
                         <div class="col-6">
                             <input id="date_initial" type="date"
-                                   class="form-control" name="date_initial"
-                                   value="{{$date_initial}}">
+                                   class="form-control @error('date_initial') is-invalid @enderror" name="date_initial"
+                                   value="{{$date_initial}}" >
+                            @error('date_initial')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                       </span>
+                            @enderror
                         </div>
                         </div>
                     </div>
@@ -26,8 +31,13 @@
 
                         <div class="col-6">
                             <input id="date_fin" type="date"
-                                   class="form-control" name="date_fin"
-                                   value="{{$date_fin}}" >
+                                   class="form-control @error('date_fin') is-invalid @enderror" name="date_fin"
+                                   value="{{$date_fin}}">
+                            @error('date_fin')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
 
                         </div>
                         </div>

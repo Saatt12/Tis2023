@@ -12,7 +12,7 @@
                         <form class="ps-3" method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label">{{ __('Name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label">{{ 'Nombre' }}</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text"

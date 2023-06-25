@@ -844,6 +844,7 @@ class HomeController extends Controller
             $name =$request->name;
         }
         $users = $users->get();
+        if(sizeof($request->all()) === 0) $users = [];
         return view('pages.reports.reports_users')->with([
             'users'=>$users,
             'type_list' =>$type_list,
@@ -862,6 +863,7 @@ class HomeController extends Controller
         $date_initial='';
         $date_fin='';
         $name='';
+
         if(sizeof($search)){
             $payments = Payment::where('id','!=',null);
             if($request && @$request->date_initial){
@@ -878,6 +880,7 @@ class HomeController extends Controller
                 $name =$request->name;
             }
             $payments = $payments->get();
+            if(sizeof($request->all()) === 0) $payments = [];
             return view('pages.reports.reports_payments')->with([
                 'payments'=>$payments,
                 'type_list' =>$type_list,
@@ -888,6 +891,7 @@ class HomeController extends Controller
             ]);
         }else{
             $payments_all = Payment::all();
+            if(sizeof($request->all()) === 0) $payments_all = [];
             return view('pages.reports.reports_payments')->with([
                 'payments'=>$payments_all,
                 'type_list' =>$type_list,
@@ -914,6 +918,7 @@ class HomeController extends Controller
             $date_fin =$request->date_fin;
         }
         $announcements = $announcements->get();
+        if(sizeof($request->all()) === 0) $announcements = [];
         return view('pages.reports.reports_announcement')->with([
             'type_list' =>$type_list,
             'title'=>$title,
@@ -1034,15 +1039,30 @@ class HomeController extends Controller
     }
 
     public function search_reports_users(Request $request){
+        $validatedData = $request->validate([
+            'announcement_id' => ['required'],
+            'date_initial' => ['required'],
+            'date_fin' => ['required'],
+            'name' => ['required'],
+        ]);
         $search = $request->except('_token');
         return redirect()->route('reports_users',$search);
 
     }
     public function search_reports_payments(Request $request){
+        $validatedData = $request->validate([
+            'date_initial' => ['required'],
+            'date_fin' => ['required'],
+            'name' => ['required'],
+        ]);
         $search = $request->except('_token');
         return redirect()->route('reports_payments',$search);
     }
     public function search_reports_announcement(Request $request){
+        $validatedData = $request->validate([
+            'date_initial' => ['required'],
+            'date_fin' => ['required'],
+        ]);
         $search = $request->except('_token');
         return redirect()->route('reports_announcement',$search);
     }

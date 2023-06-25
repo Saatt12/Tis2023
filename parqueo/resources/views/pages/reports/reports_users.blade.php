@@ -18,6 +18,11 @@
                            <option value="{{$announcement->id}}" {{$announcement->id === @$announcement_id ? 'selected' : '' }}>{{ $announcement->fecha_inicio }} - {{ $announcement->fecha_fin }}</option>
                        @endforeach
                    </select>
+                   @error('announcement_id')
+                   <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                       </span>
+                   @enderror
                </div>
                <div class="col-5">
                <div class="row mb-3">

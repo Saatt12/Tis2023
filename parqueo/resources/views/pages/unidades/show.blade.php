@@ -4,14 +4,14 @@
     <div class="container">
         <div class="row justify-content-center pt-5">
             <div class="col-md-8 col-lg-7">
-                <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Editar Horario</div>
+                <div class="bg-red-cherry pt-3 pb-3 text-center fw-bolder text-white mb-2">Editar Unidad</div>
                 <div class="card">
                     <div class="card-body">
                         <form class="ps-3" method="POST" action="{{ route('unidad.update', $unidad->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label">Nombre Horario</label>
+                                <label for="name" class="col-md-4 col-form-label">Nombre Unidad</label>
 
                                 <div class="col-md-6">
                                     <input id="nom_unidad" type="text"

@@ -58,9 +58,9 @@
                                 <label for="cargo" class="col-md-4 col-form-label">Cargo </label>
                                 <div class="col-md-6">
                                     <select id="cargo" class="form-control @error('cargo_id') is-invalid @enderror" name="cargo_id" required autofocus>
-                                        <option value="" selected="{{!@$user->cargo_id?'selected':''}}"> Selecciona un Cargo</option>
+                                        <option value="" {{!@$user->cargo_id?'selected':''}}> Selecciona un Cargo</option>
                                         @foreach($cargos as $cargo)
-                                            <option value="{{$cargo->id}}" selected="{{@$cargo->id===@$user->cargo_id?'selected':''}}">{{$cargo->nom_cargo}}</option>
+                                            <option value="{{$cargo->id}}" {{@$cargo->id===@$user->cargo_id?'selected':''}}>{{$cargo->nom_cargo}}</option>
                                         @endforeach
                                     </select>
 
@@ -118,9 +118,9 @@
                                 <label for="cargo" class="col-md-4 col-form-label">Unidad </label>
                                 <div class="col-md-6">
                                     <select id="unidad" class="form-control @error('unidad_id') is-invalid @enderror" name="unidad_id" required autofocus>
-                                        <option value="" selected=""> Selecciona una Unidad</option>
+                                        <option value="" {{!@$user->unidad_id?'selected':''}}> Selecciona una Unidad</option>
                                         @foreach($unidades as $unidad)
-                                            <option value="{{$unidad->id}}" selected="{{@$unidad->id===@$user->unidad_id?'selected':''}}">{{$unidad->nom_unidad}}</option>
+                                            <option value="{{$unidad->id}}" {{@$unidad->id===@$user->unidad_id?'selected':''}}>{{$unidad->nom_unidad}}</option>
                                         @endforeach
                                     </select>
 
@@ -135,9 +135,9 @@
                                 <label for="rol_id" class="col-md-4 col-form-label">Rol </label>
                                 <div class="col-md-6">
                                     <select id="rol_id" class="form-control @error('rol_id') is-invalid @enderror" name="rol_id" required autofocus>
-                                        <option value="" selected=""> Selecciona una Unidad</option>
+                                        <option value="" {{!@$user->rol_id?'selected':''}}> Selecciona una Unidad</option>
                                         @foreach($roles as $rol)
-                                            <option value="{{$rol->id}}" selected="{{@$rol->id===@$user->rol_id?'selected':''}}">{{$rol->nom_role}}</option>
+                                            <option value="{{$rol->id}}" {{@$rol->id===@$user->rol_id?'selected':''}}>{{$rol->nom_role}}</option>
                                         @endforeach
                                     </select>
 

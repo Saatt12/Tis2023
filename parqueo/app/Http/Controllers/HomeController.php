@@ -251,10 +251,12 @@ class HomeController extends Controller
         ]);
         $rol = Rol::create($validatedData);
         $data_admin_permission = [];
-        foreach ($request->permissions as $permission) {
-            array_push($data_admin_permission,['rol_id'=>$rol->id,'permission_id'=>$permission]);
+        if(@$request->permissions && sizeof($request->permissions)>0) {
+            foreach ($request->permissions as $permission) {
+                array_push($data_admin_permission, ['rol_id' => $rol->id, 'permission_id' => $permission]);
+            }
+            RolePermission::insert($data_admin_permission);
         }
-        RolePermission::insert($data_admin_permission);
         return redirect()->route('role');
     }
     public function role_show($id)
@@ -277,10 +279,12 @@ class HomeController extends Controller
         $role = Rol::findOrFail($id);
         RolePermission::where('rol_id',$role->id)->delete();
         $data_admin_permission = [];
-        foreach ($request->permissions as $permission) {
-            array_push($data_admin_permission,['rol_id'=>$role->id,'permission_id'=>$permission]);
+        if(@$request->permissions && sizeof($request->permissions)>0) {
+            foreach ($request->permissions as $permission) {
+                array_push($data_admin_permission, ['rol_id' => $role->id, 'permission_id' => $permission]);
+            }
+            RolePermission::insert($data_admin_permission);
         }
-        RolePermission::insert($data_admin_permission);
         $requestData = $request->except(['permissions']);
         $role->update($requestData);
         return redirect('/roles');

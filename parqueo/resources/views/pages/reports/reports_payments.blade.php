@@ -129,7 +129,7 @@
                     <label for="number" class="col-md-4 col-form-label">Nro de recibo</label>
                     <div class="col-md-6">
                         <input type="number" class="form-control" name="number"
-                               value="{{ $payment->number }}" disabled>
+                               value="{{ $payment->id }}" disabled>
                     </div>
                 </div>
                 <div class="row mb-3">

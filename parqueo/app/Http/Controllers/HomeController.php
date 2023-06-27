@@ -92,7 +92,7 @@ class HomeController extends Controller
         $requestData = $request->all();
         $requestData['password'] = Hash::make($request->password);
         $user->update($requestData);
-        return redirect()->route('users.show', $user->id);
+        return redirect('/home');
     }
 //HORARIOS----------------------------------------------------------------------------------
     public function list_horarios()
@@ -416,7 +416,7 @@ class HomeController extends Controller
         $requestData = $request->all();
         $requestData['password'] = Hash::make($request->password);
         $user->update($requestData);
-        return redirect()->route('employee.show', $user->id);
+        return redirect()->route('employee');//redirect()->route('employee.show', $user->id);
     }
     public function employee_destroy($id)
     {
@@ -848,7 +848,6 @@ class HomeController extends Controller
             $name =$request->name;
         }
         $users = $users->get();
-        if(sizeof($request->all()) === 0) $users = [];
         return view('pages.reports.reports_users')->with([
             'users'=>$users,
             'type_list' =>$type_list,
@@ -884,7 +883,6 @@ class HomeController extends Controller
                 $name =$request->name;
             }
             $payments = $payments->get();
-            if(sizeof($request->all()) === 0) $payments = [];
             return view('pages.reports.reports_payments')->with([
                 'payments'=>$payments,
                 'type_list' =>$type_list,
@@ -895,7 +893,6 @@ class HomeController extends Controller
             ]);
         }else{
             $payments_all = Payment::all();
-            if(sizeof($request->all()) === 0) $payments_all = [];
             return view('pages.reports.reports_payments')->with([
                 'payments'=>$payments_all,
                 'type_list' =>$type_list,
@@ -922,7 +919,6 @@ class HomeController extends Controller
             $date_fin =$request->date_fin;
         }
         $announcements = $announcements->get();
-        if(sizeof($request->all()) === 0) $announcements = [];
         return view('pages.reports.reports_announcement')->with([
             'type_list' =>$type_list,
             'title'=>$title,

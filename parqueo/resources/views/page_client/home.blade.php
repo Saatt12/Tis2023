@@ -275,12 +275,13 @@
                                         value="{{ auth()->user()->name }}">
                                 </div>
                             </div>
+                            @if(@$payment->type==='qr')
                             <form method="POST" action="{{ route('export_payment_factura') }}" target="_blank">
                                 @csrf
                                 <input id="date_initial" type="hidden" value="{{$payment->id}}" name="payment_id">
                                 <button type="submit" class="btn btn-primary bg-blue-dark">Descargar Factura PDF</button>
                             </form>
-
+                            @endif
                         </x-slot>
                         <x-slot name="buttons">
                             <div class="row justify-content-center">

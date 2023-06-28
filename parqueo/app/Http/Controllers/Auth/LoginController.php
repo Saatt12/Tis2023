@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use App\Models\Permission;
+use App\Models\RolePermission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -39,13 +42,30 @@ class LoginController extends Controller
     }
     protected function authenticated(Request $request, $user)
     {
-        if ($user->hasRole('1') || $user->hasRoleName('OPERADOR') ) {
-            return redirect()->route('home');
-        }elseif($user->hasRoleName('GUARDIA')){
-            return redirect()->route('parking.index');
-        }
-        else {
+        if($user->hasRoleName('CLIENTE')){
             return redirect()->route('home_client');
+        }else{
+            $routes = [
+                "ver_cargo"=>'/cargos',
+                "ver_unidad"=>'/unidades',
+                "ver_rol"=>'/roles',
+                "ver_clientes"=>'/home',
+                "ver_solicitudes_parqueo"=>'/requests',
+                "ver_empleado"=>'/employees',
+                "ver_horario"=>'/horarios',
+                "ver_reclamo"=>'/claims',
+                "ver_parqueo"=>'/parking',
+                "ver_reporte"=>'/reports',
+                "ver_mensaje"=>'/conversations',
+                "ver_cobros"=>'/cobros'
+            ];
+            $first_permission = RolePermission::where('rol_id',$user->rol_id)->first();
+            if(!$first_permission) {
+                Auth::logout();
+                return redirect('/');
+            }
+            $permission = Permission::findOrFail($first_permission->permission_id);
+            return redirect($routes[$permission->key]);
         }
     }
 }

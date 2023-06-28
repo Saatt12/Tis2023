@@ -1039,30 +1039,30 @@ class HomeController extends Controller
     }
 
     public function search_reports_users(Request $request){
-        $validatedData = $request->validate([
+       /* $validatedData = $request->validate([
             'announcement_id' => ['required'],
             'date_initial' => ['required'],
             'date_fin' => ['required'],
             'name' => ['required'],
-        ]);
+        ]);*/
         $search = $request->except('_token');
         return redirect()->route('reports_users',$search);
 
     }
     public function search_reports_payments(Request $request){
-        $validatedData = $request->validate([
+        /*$validatedData = $request->validate([
             'date_initial' => ['required'],
             'date_fin' => ['required'],
             'name' => ['required'],
-        ]);
+        ]);*/
         $search = $request->except('_token');
         return redirect()->route('reports_payments',$search);
     }
     public function search_reports_announcement(Request $request){
-        $validatedData = $request->validate([
+        /*$validatedData = $request->validate([
             'date_initial' => ['required'],
             'date_fin' => ['required'],
-        ]);
+        ]);*/
         $search = $request->except('_token');
         return redirect()->route('reports_announcement',$search);
     }

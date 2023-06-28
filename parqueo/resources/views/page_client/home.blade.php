@@ -38,13 +38,13 @@
                                 data-bs-target="#modal-payment-list">Lista recibos</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a href="{{ url('client/vehicle') }}" class="btn btn-danger bg-red-cherry me-3">
+                            <a href="{{ url('client/vehicle') }}" class="btn btn-danger bg-red-cherry me-3 {{@$my_request->parking_id?'':'disabled'}}">
                                 Registrar vehiculo</a>
-                            <a href="" class="btn btn-danger bg-red-cherry" data-bs-toggle="modal"
+                            <a href="" class="btn btn-danger bg-red-cherry {{@$my_request->parking_id?'':'disabled'}}" data-bs-toggle="modal"
                                 data-bs-target="#vehicle_registered_">Vehiculos registrados</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
-                            <a class="btn btn-primary bg-blue-dark {{@$announcement && sizeof($vehicles)>0?'':'disabled'}}" data-bs-toggle="modal"
+                            <a class="btn btn-primary bg-blue-dark {{@$announcement?'':'disabled'}}" data-bs-toggle="modal"
                                 data-bs-target="#modal-request">Solicitud de parqueo</a>
                         </div>
                         <div class="d-flex justify-content-center mb-4">
